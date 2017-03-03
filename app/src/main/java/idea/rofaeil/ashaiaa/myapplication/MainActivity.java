@@ -31,12 +31,15 @@ public class MainActivity extends AppCompatActivity {
                 switch (id){
                     case R.id.favorites:
                         mFragment = new FavouriteFragment();
+                        mBinding.toolbar.setTitle(getResources().getString(R.string.favorites));
                         break;
                     case R.id.top_rated:
                         mFragment = new TopRatedFragment();
+                        mBinding.toolbar.setTitle(getResources().getString(R.string.top_rated));
                         break;
                     case R.id.popular:
                         mFragment = new PopularFragment();
+                        mBinding.toolbar.setTitle(getResources().getString(R.string.popular));
                         break;
                 }
 
