@@ -1,4 +1,4 @@
-package idea.rofaeil.ashaiaa.myapplication;
+package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.MainActivityBinding;
 
 public class MainActivity extends AppCompatActivity {

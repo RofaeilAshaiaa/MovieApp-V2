@@ -1,4 +1,4 @@
-package idea.rofaeil.ashaiaa.myapplication;
+package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
 
 import android.os.Bundle;
@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import idea.rofaeil.ashaiaa.myapplication.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
+
 public class TopRatedFragment extends Fragment {
 
 
