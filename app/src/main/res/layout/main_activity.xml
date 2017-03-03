@@ -8,15 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="idea.rofaeil.ashaiaa.myapplication.MainActivity">
+        tools:context="idea.rofaeil.ashaiaa.myapplication.MainClasses.MainActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="@string/app_name"
             app:titleTextColor="@android:color/black" />
+
+        </android.support.design.widget.AppBarLayout>
         <FrameLayout
             android:id="@+id/main_container"
             android:layout_width="match_parent"
@@ -30,9 +39,11 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             app:itemBackground="@color/colorPrimary"
-            app:itemIconTint="@android:color/black"
-            app:itemTextColor="@color/color_state_list"
+            app:itemIconTint="@color/nv_tab_item_foreground"
+            app:itemTextColor="@color/nv_tab_item_foreground"
             app:menu="@menu/bottom_navigation_main" />
+
+
 
 
     </android.support.design.widget.CoordinatorLayout>
