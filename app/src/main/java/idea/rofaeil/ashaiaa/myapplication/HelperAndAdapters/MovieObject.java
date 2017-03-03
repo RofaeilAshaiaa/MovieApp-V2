@@ -14,22 +14,11 @@ public class MovieObject {
     public MovieObject() {
     }
 
-    public MovieObject(int mMovieId, String mMoviePoster, String mMovieOverview, String mReleaseDate,
-                       String mMovieRuntime, String mOriginalTitle, String mVoteAverage) {
-        this.mMovieId = mMovieId;
-        this.mMoviePoster = mMoviePoster;
-        this.mMovieOverview = mMovieOverview;
-        this.mReleaseDate = mReleaseDate;
-        this.mMovieRuntime = mMovieRuntime;
-        this.mOriginalTitle = mOriginalTitle;
-        this.mVoteAverage = mVoteAverage;
-    }
-
-    public String getmMoviePoster() {
+    public String getMoviePoster() {
         return mMoviePoster;
     }
 
-    public void setmMoviePoster(String mMoviePoster) {
+    public void setMoviePoster(String mMoviePoster) {
         this.mMoviePoster = mMoviePoster;
     }
 
@@ -41,43 +30,43 @@ public class MovieObject {
         this.mMovieRuntime = runtime;
     }
 
-    public String getmMovieOverview() {
+    public String getMovieOverview() {
         return mMovieOverview;
     }
 
-    public void setmMovieOverview(String mMovieOverview) {
+    public void setMovieOverview(String mMovieOverview) {
         this.mMovieOverview = mMovieOverview;
     }
 
-    public String getmReleaseDate() {
+    public String getReleaseDate() {
         return mReleaseDate;
     }
 
-    public void setmReleaseDate(String mReleaseDate) {
+    public void setReleaseDate(String mReleaseDate) {
         this.mReleaseDate = mReleaseDate;
     }
 
-    public int getmMovieId() {
+    public int getMovieId() {
         return mMovieId;
     }
 
-    public void setmMovieId(int mMovieId) {
+    public void setMovieId(int mMovieId) {
         this.mMovieId = mMovieId;
     }
 
-    public String getmOriginalTitle() {
+    public String getOriginalTitle() {
         return mOriginalTitle;
     }
 
-    public void setmOriginalTitle(String mOriginalTitle) {
+    public void setOriginalTitle(String mOriginalTitle) {
         this.mOriginalTitle = mOriginalTitle;
     }
 
-    public String getmVoteAverage() {
+    public String getVoteAverage() {
         return mVoteAverage;
     }
 
-    public void setmVoteAverage(String mVoteAverage) {
+    public void setVoteAverage(String mVoteAverage) {
         this.mVoteAverage = mVoteAverage;
     }
 }
