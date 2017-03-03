@@ -29,17 +29,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int id = item.getItemId();
         switch (id){
             case R.id.favorites:
-                //fragment = new SearchFragment();
+                mFragment = new FavouriteFragment();
                 break;
             case R.id.top_rated:
                 mFragment = new TopRatedFragment();
                 break;
             case R.id.popular:
-                //fragment = new DealsFragment();
+                mFragment = new PopularFragment();
                 break;
         }
 
-        getSupportFragmentManager().beginTransaction().replace(mBinding.mainContainer.getId(), mFragment);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(mBinding.mainContainer.getId(), mFragment)
+                .commit();
 //        final FragmentTransaction transaction = fragmentManager.beginTransaction();
 //        transaction.replace(R.id.main_container, fragment).commit();
         return true;
