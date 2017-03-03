@@ -3,15 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/popular"
+        android:enabled="true"
         android:icon="@drawable/ic_language_black_24dp"
-        android:title="@string/popular" />
+        android:title="@string/popular"
+
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/top_rated"
+        android:enabled="true"
         android:icon="@drawable/ic_trending_up_black_18dp"
         android:title="@string/top_rated"
-        />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/favorites"
+        android:enabled="true"
         android:icon="@drawable/ic_favorite_border_black_24dp"
-        android:title="@string/favorites" />
+        android:title="@string/favorites"
+        app:showAsAction="ifRoom" />
 </menu>
