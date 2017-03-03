@@ -1,7 +1,7 @@
 package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
 
 
-public class MovieObject {
+public class Movie {
 
     private int mMovieId;
     private String mMoviePoster;
@@ -11,7 +11,7 @@ public class MovieObject {
     private String mOriginalTitle;
     private String mVoteAverage;
 
-    public MovieObject() {
+    public Movie() {
     }
 
     public String getMoviePoster() {
