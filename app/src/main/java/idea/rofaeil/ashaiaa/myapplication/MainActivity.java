@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 //fragment = new DealsFragment();
                 break;
         }
+
+        getSupportFragmentManager().beginTransaction().replace(mBinding.mainContainer.getId(), mFragment);
 //        final FragmentTransaction transaction = fragmentManager.beginTransaction();
 //        transaction.replace(R.id.main_container, fragment).commit();
         return true;
