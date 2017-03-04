@@ -1,12 +1,19 @@
 package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -17,10 +24,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<Movie> mMovieArrayList ;
     private Context mContext;
+    private FragmentActivity mActivity ;
 
-    public RecyclerViewAdapter(ArrayList<Movie> mMovieArrayList, Context mContext) {
+    public RecyclerViewAdapter(ArrayList<Movie> mMovieArrayList, Context mContext , FragmentActivity activity) {
         this.mMovieArrayList = mMovieArrayList;
         this.mContext = mContext;
+        this.mActivity = activity ;
     }
 
     @Override
@@ -35,8 +44,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(myViewHolder holder, int position) {
 
-        holder.itemBinding.rvImageViewItem.
-                setImageResource(R.drawable.pic);
+//        Uri uri = Uri.parse("http://i.imgur.com/DvpvklR.png");
+//        holder.itemBinding.rvImageViewItem.setImageURI(uri);
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        mActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int heightPixels = displaymetrics.heightPixels;
+        int targetY = 2 * (heightPixels /5) ;
+        holder.itemBinding.rvImageViewItem.setMinimumHeight(targetY);
+        Picasso.with(mContext).load("http://i.imgur.com/DvpvklR.png")
+                .into(holder.itemBinding.rvImageViewItem);
+
 
     }
 
