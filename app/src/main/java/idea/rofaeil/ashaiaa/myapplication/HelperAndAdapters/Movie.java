@@ -1,6 +1,12 @@
 package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class Movie {
 
     private int mMovieId;
@@ -68,5 +74,21 @@ public class Movie {
 
     public void setVoteAverage(String mVoteAverage) {
         this.mVoteAverage = mVoteAverage;
+    }
+
+    private ArrayList<Movie> extractMovieDataFromJson(JSONArray movie_jsonArray) throws JSONException {
+        int ctr = movie_jsonArray.length();
+        ArrayList<Movie> moviesListInMethod = new ArrayList<>(ctr);
+        //ArrayList<Movie> movies_ArrayList_in_method = new ArrayList<>();
+
+        for (int i = 0; i < ctr; i++) {
+            Movie mMovie = new Movie();
+
+            JSONObject jsonObject_of_movie = movie_jsonArray.getJSONObject(i);
+            mMovie.setMoviePoster(jsonObject_of_movie.getString("poster_path"));
+            mMovie.setMovieId(jsonObject_of_movie.getInt("id"));
+            moviesListInMethod.add(mMovie);
+        }
+        return moviesListInMethod;
     }
 }
