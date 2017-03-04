@@ -37,4 +37,14 @@ public class PopularFragment extends Fragment {
         return mBinding.getRoot() ;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mBinding.rvPopular.setAdapter( new RecyclerViewAdapter(new ArrayList<Movie>(4) ,getContext() ,getActivity()));
+
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
+
+        mBinding.rvPopular.setLayoutManager(mLayoutManager);
+    }
+
 }
