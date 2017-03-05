@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import idea.rofaeil.ashaiaa.myapplication.MainClasses.MainActivity;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewItemBinding;
 
@@ -24,58 +25,44 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<Movie> mMovieArrayList ;
     private Context mContext;
-    private FragmentActivity mActivity ;
 
-    public RecyclerViewAdapter(ArrayList<Movie> mMovieArrayList, Context mContext , FragmentActivity activity) {
+    public RecyclerViewAdapter(ArrayList<Movie> mMovieArrayList, Context mContext ) {
         this.mMovieArrayList = mMovieArrayList;
         this.mContext = mContext;
-        this.mActivity = activity ;
     }
 
     @Override
     public RecyclerViewAdapter.myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
-        RecyclerviewItemBinding viewDataBinding = DataBindingUtil.inflate(inflater, R.layout.recyclerview_item, parent, false);
-
-        return new myViewHolder( viewDataBinding);
+        RecyclerviewItemBinding view =
+                DataBindingUtil.inflate(inflater, R.layout.recyclerview_item, parent, false);
+        return new myViewHolder( view);
     }
 
     @Override
     public void onBindViewHolder(myViewHolder holder, int position) {
 
-//        Uri uri = Uri.parse("http://i.imgur.com/DvpvklR.png");
-//        holder.itemBinding.rvImageViewItem.setImageURI(uri);
+        holder.itemBinding.rvImageViewItem.setMinimumHeight(MainActivity.targetY);
 
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        mActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int heightPixels = displaymetrics.heightPixels;
-        int targetY = 2 * (heightPixels /5) ;
-        holder.itemBinding.rvImageViewItem.setMinimumHeight(targetY);
-        Picasso.with(mContext).load("http://i.imgur.com/DvpvklR.png")
-                .into(holder.itemBinding.rvImageViewItem);
-
-
+        Picasso.with(mContext).load(mMovieArrayList.get(position).getMoviePoster())
+                 .placeholder(R.drawable.ic_favorite_border_black_24dp)
+                .error(R.drawable.ic_language_black_24dp)
+                .fit().into(holder.itemBinding.rvImageViewItem);
     }
 
     @Override
     public int getItemCount() {
-        return 10 ;
-//        return mMovieArrayList.size();
+        return mMovieArrayList.size();
     }
 
     public  class myViewHolder extends RecyclerView.ViewHolder {
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
+
         public RecyclerviewItemBinding itemBinding;
 
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
-        public myViewHolder(RecyclerviewItemBinding itemView) {
-            // Stores the itemView in a public final member variable that can be used
-            // to access the context from any myViewHolder instance.
-            super(itemView.getRoot());
 
+        public myViewHolder(RecyclerviewItemBinding itemView) {
+            super(itemView.getRoot());
             itemBinding = itemView  ;
         }
     }
