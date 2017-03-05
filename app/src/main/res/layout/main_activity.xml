@@ -10,32 +10,38 @@
         android:fitsSystemWindows="true"
         tools:context="idea.rofaeil.ashaiaa.myapplication.MainClasses.MainActivity">
 
-
-
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="@string/app_name"
-            app:titleTextColor="@android:color/black" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="@string/app_name"
+                app:titleTextColor="@android:color/black" />
 
         </android.support.design.widget.AppBarLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar_review_subjects"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:max="100"
+            android:visibility="invisible" />
 
         <FrameLayout
             android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation"
@@ -48,9 +54,6 @@
             app:itemIconTint="@color/nv_tab_item_foreground"
             app:itemTextColor="@color/nv_tab_item_foreground"
             app:menu="@menu/bottom_navigation_main" />
-
-
-
 
     </android.support.design.widget.CoordinatorLayout>
 
