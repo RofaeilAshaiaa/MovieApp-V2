@@ -1,17 +1,10 @@
 package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
