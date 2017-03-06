@@ -1,6 +1,5 @@
 package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +24,6 @@ public class Movie {
     public static ArrayList<Movie> extractMovieDataFromJson(JSONArray movie_jsonArray) throws JSONException {
         int ctr = movie_jsonArray.length();
         ArrayList<Movie> moviesListInMethod = new ArrayList<>(ctr);
-        //ArrayList<Movie> movies_ArrayList_in_method = new ArrayList<>();
 
         for (int i = 0; i < ctr; i++) {
             Movie mMovie = new Movie();
