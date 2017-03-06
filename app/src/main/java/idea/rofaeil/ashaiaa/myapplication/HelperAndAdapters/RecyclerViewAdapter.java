@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
@@ -16,12 +17,16 @@ import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewItemBinding;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.myViewHolder>{
 
+    final private ListItemClickListener itemClickListener ;
     private ArrayList<Movie> mMovieArrayList ;
     private Context mContext;
 
-    public RecyclerViewAdapter(ArrayList<Movie> mMovieArrayList, Context mContext ) {
+    public RecyclerViewAdapter(ArrayList<Movie> mMovieArrayList, Context mContext
+                                                     ,ListItemClickListener itemClickListener ) {
         this.mMovieArrayList = mMovieArrayList;
         this.mContext = mContext;
+        this.itemClickListener = itemClickListener;
+
     }
 
     @Override
@@ -49,14 +54,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mMovieArrayList.size();
     }
 
-    public  class myViewHolder extends RecyclerView.ViewHolder {
+    public interface ListItemClickListener{
+        public void onListItemClicked(int clickedItemIndex);
+    }
+
+    public  class myViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public RecyclerviewItemBinding itemBinding;
 
 
         public myViewHolder(RecyclerviewItemBinding itemView) {
             super(itemView.getRoot());
+
             itemBinding = itemView  ;
+            itemView.getRoot().setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition() ;
+            itemClickListener.onListItemClicked(clickedPosition);
         }
     }
 }

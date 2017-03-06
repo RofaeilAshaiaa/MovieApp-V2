@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +24,8 @@ import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.RecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.TopRatedFragmentBinding;
 
-public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
+public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
+        ,RecyclerViewAdapter.ListItemClickListener {
 
     private final int TOP_RATED_LOADER_ID = 22;
     private TopRatedFragmentBinding mBinding;
@@ -56,7 +58,7 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
             mJsonObject = new JSONObject(data);
             JSONArray mMoviesJsonArray = mJsonObject.getJSONArray("results");
             ArrayList<Movie> mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
-            mBinding.rvTopRated.setAdapter( new RecyclerViewAdapter(mMoviesList,getContext() ));
+            mBinding.rvTopRated.setAdapter( new RecyclerViewAdapter(mMoviesList,getContext() ,this));
             GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
             mBinding.rvTopRated.setLayoutManager(mLayoutManager);
         } catch (JSONException e) {
@@ -84,5 +86,10 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
 //            loaderManager.restartLoader(POPULAR_LOADER_ID,null,this).startLoading();
 //        }
 
+    }
+
+    @Override
+    public void onListItemClicked(int clickedItemIndex) {
+        Toast.makeText(getContext(), ""+clickedItemIndex, Toast.LENGTH_SHORT).show();
     }
 }

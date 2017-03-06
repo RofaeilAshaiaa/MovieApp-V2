@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +24,8 @@ import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.RecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.PopularFragmentBinding;
 
-public class PopularFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>{
+public class PopularFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
+        ,RecyclerViewAdapter.ListItemClickListener{
 
     private final int POPULAR_LOADER_ID = 11;
     private PopularFragmentBinding mBinding ;
@@ -71,7 +73,7 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
             mJsonObject = new JSONObject(data);
             JSONArray mMoviesJsonArray = mJsonObject.getJSONArray("results");
             ArrayList<Movie> mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
-            mBinding.rvPopular.setAdapter( new RecyclerViewAdapter(mMoviesList,getContext() ));
+            mBinding.rvPopular.setAdapter( new RecyclerViewAdapter(mMoviesList,getContext() ,this ));
             GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
             mBinding.rvPopular.setLayoutManager(mLayoutManager);
         } catch (JSONException e) {
@@ -83,5 +85,10 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(Loader<String> loader) {
 
+    }
+
+    @Override
+    public void onListItemClicked(int clickedItemIndex) {
+        Toast.makeText(getContext(), ""+clickedItemIndex, Toast.LENGTH_SHORT).show();
     }
 }
