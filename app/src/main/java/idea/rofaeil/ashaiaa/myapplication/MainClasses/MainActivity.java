@@ -17,9 +17,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String[] URLs =
             {"http://api.themoviedb.org/3/movie/popular?api_key=27c5319da038dffe1e6957609d9797a0",
                     "http://api.themoviedb.org/3/movie/top_rated?api_key=27c5319da038dffe1e6957609d9797a0"};
-    public static int targetY ;
+    public static int targetY;
     private Fragment mFragment;
-    private MainActivityBinding mBinding ;
+    private MainActivityBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int heightPixels = displaymetrics.heightPixels;
-        targetY = 2 * (heightPixels /5) ;
+        targetY = 2 * (heightPixels / 5);
     }
 
     private void setClickListenerNavigationBottom() {
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                switch (id){
+                switch (id) {
                     case R.id.favorites:
                         mFragment = new FavouriteFragment();
                         mBinding.toolbar.setTitle(getResources().getString(R.string.favorites));
