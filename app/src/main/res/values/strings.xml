@@ -3,5 +3,7 @@
     <string name="popular">Popular</string>
     <string name="top_rated">Top Rated</string>
     <string name="favorites">Favorites</string>
+    <string name="preference_file_name">Preferences_app</string>
+    <string name="last_selected" >last_selected</string>
 
 </resources>

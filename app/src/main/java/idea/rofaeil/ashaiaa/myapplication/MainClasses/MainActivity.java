@@ -1,5 +1,7 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         setClickListenerNavigationBottom();
         setImageHeightValue();
+
+//        SharedPreferences mSharedPref = getApplicationContext()
+//                .getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE);
+//        int last_selected = mSharedPref.getInt(getString(R.string.last_selected), 199);
+
     }
 
     private void setImageHeightValue() {
@@ -37,25 +44,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setClickListenerNavigationBottom() {
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences
+                (getString(R.string.preference_file_name), Context.MODE_PRIVATE);
+        final SharedPreferences.Editor mySharedPreferencesEditor = sharedPreferences.edit();
+
         mBinding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.favorites:
+                        mySharedPreferencesEditor.putInt(getString(R.string.last_selected), 3);
                         mFragment = new FavouriteFragment();
                         mBinding.toolbar.setTitle(getResources().getString(R.string.favorites));
                         break;
                     case R.id.top_rated:
+                        mySharedPreferencesEditor.putInt(getString(R.string.last_selected), 2);
                         mFragment = new TopRatedFragment();
                         mBinding.toolbar.setTitle(getResources().getString(R.string.top_rated));
                         break;
                     case R.id.popular:
+                        mySharedPreferencesEditor.putInt(getString(R.string.last_selected), 1);
                         mFragment = new PopularFragment();
                         mBinding.toolbar.setTitle(getResources().getString(R.string.popular));
                         break;
                 }
 
+                mySharedPreferencesEditor.commit();
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.main_container, mFragment)
