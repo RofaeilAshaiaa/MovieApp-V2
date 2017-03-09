@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                mySharedPreferencesEditor.commit();
+                mySharedPreferencesEditor.apply();
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.main_container, mFragment)
@@ -79,6 +80,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public static boolean isTwoPane(FragmentActivity activity ) {
+
+//        activity.findViewById()
+
+        return false;
     }
 
 }
