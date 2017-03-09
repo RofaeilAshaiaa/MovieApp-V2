@@ -1,8 +1,10 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,11 +27,13 @@ import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.PopularFragmentBinding;
 
 public class PopularFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
-        ,RecyclerViewAdapter.ListItemClickListener{
+        , RecyclerViewAdapter.ListItemClickListener {
 
     private final int POPULAR_LOADER_ID = 11;
-    private PopularFragmentBinding mBinding ;
-    private ProgressBar mProgressBar ;
+    private PopularFragmentBinding mBinding;
+    private ProgressBar mProgressBar;
+    ArrayList<Movie> mMoviesList;
+    private FragmentActivity mMainActivity;
 
     public PopularFragment() {
         // Required empty public constructor
@@ -38,19 +42,20 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mBinding = DataBindingUtil.inflate(inflater,R.layout.popular_fragment ,container,false) ;
-        mProgressBar = (ProgressBar) getActivity().findViewById(R.id.progress_bar_review_subjects);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.popular_fragment, container, false);
+        mMainActivity = getActivity();
+        mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_review_subjects);
         makeNetworkRequest();
-        return mBinding.getRoot() ;
+        return mBinding.getRoot();
     }
 
     private void makeNetworkRequest() {
 
         mProgressBar.setVisibility(View.VISIBLE);
-        LoaderManager loaderManager = getActivity().getSupportLoaderManager() ;
+        LoaderManager loaderManager = getActivity().getSupportLoaderManager();
         Loader<String> popularLoader = loaderManager.getLoader(POPULAR_LOADER_ID);
-        loaderManager.initLoader(POPULAR_LOADER_ID,null,this).forceLoad();
-        
+        loaderManager.initLoader(POPULAR_LOADER_ID, null, this).forceLoad();
+
 //        if(popularLoader == null)
 //        {
 //          loaderManager.initLoader(POPULAR_LOADER_ID,null,this).forceLoad();
@@ -62,7 +67,7 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new NetworkAsyncTaskLoader(getContext() ,MainActivity.URLs[0]);
+        return new NetworkAsyncTaskLoader(getContext(), MainActivity.URLs[0]);
     }
 
     @Override
@@ -72,9 +77,9 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
         try {
             mJsonObject = new JSONObject(data);
             JSONArray mMoviesJsonArray = mJsonObject.getJSONArray("results");
-            ArrayList<Movie> mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
-            mBinding.rvPopular.setAdapter( new RecyclerViewAdapter(mMoviesList,getContext() ,this ));
-            GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
+            mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
+            mBinding.rvPopular.setAdapter(new RecyclerViewAdapter(mMoviesList, getContext(), this));
+            GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
             mBinding.rvPopular.setLayoutManager(mLayoutManager);
         } catch (JSONException e) {
         }
@@ -89,6 +94,13 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onListItemClicked(int clickedItemIndex) {
-        Toast.makeText(getContext(), ""+clickedItemIndex, Toast.LENGTH_SHORT).show();
+
+        if (MainActivity.isTwoPane(mMainActivity)) {
+
+        } else {
+            Intent intent = new Intent(mMainActivity, MovieDetailsActivity.class);
+            intent.putExtra(getString(R.string.movie_id_string), mMoviesList.get(clickedItemIndex).getMovieId());
+            startActivity(intent);
+        }
     }
 }
