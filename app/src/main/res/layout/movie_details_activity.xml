@@ -7,6 +7,7 @@
         android:id="@+id/movie_details_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context="idea.rofaeil.ashaiaa.myapplication.MainClasses.MovieDetailsActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -15,33 +16,41 @@
             android:layout_marginBottom="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_layout_movie_details_activity"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="@string/app_name"
-                app:titleTextColor="@android:color/black" />
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                <ImageView
+                    android:id="@+id/iv_collapsing_toolbar_detail_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="?attr/actionBarSize"
+                    android:minHeight="160dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_autorenew_black_24dp"
+                    app:layout_collapseMode="parallax" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tb_movie_details_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="@string/app_name"
+                    app:titleTextColor="@android:color/black" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>
 
-        <ProgressBar
-            android:id="@+id/pb_movie_details_fragment"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:max="100"
-            android:visibility="invisible" />
-
-        <fragment
-            android:id="@+id/movie_details_fragment"
-            class="idea.rofaeil.ashaiaa.myapplication.MainClasses.MovieDetailsFragment"
+        <FrameLayout
+            android:id="@+id/details_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/movie_details_fragment" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
