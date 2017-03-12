@@ -15,14 +15,14 @@ import idea.rofaeil.ashaiaa.myapplication.MainClasses.MainActivity;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewItemBinding;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.myViewHolder>{
+public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.myViewHolder>{
 
     final private ListItemClickListener itemClickListener ;
     private ArrayList<Movie> mMovieArrayList ;
     private Context mContext;
 
-    public RecyclerViewAdapter(ArrayList<Movie> mMovieArrayList, Context mContext
-                                                     ,ListItemClickListener itemClickListener ) {
+    public MainRecyclerViewAdapter(ArrayList<Movie> mMovieArrayList, Context mContext
+                                                     , ListItemClickListener itemClickListener ) {
         this.mMovieArrayList = mMovieArrayList;
         this.mContext = mContext;
         this.itemClickListener = itemClickListener;
@@ -30,7 +30,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public RecyclerViewAdapter.myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MainRecyclerViewAdapter.myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         RecyclerviewItemBinding view =
