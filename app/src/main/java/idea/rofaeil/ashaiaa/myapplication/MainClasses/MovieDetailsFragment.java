@@ -1,8 +1,10 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -181,6 +183,14 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onListItemTrailerClicked(int clickedItemIndex) {
+        openWebPage(mTrailersList.get(clickedItemIndex)) ;
+    }
 
+    public void openWebPage(String url) {
+        Uri webPage = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
+        if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
