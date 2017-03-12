@@ -44,4 +44,5 @@ dependencies {
     compile 'org.parceler:parceler-api:1.1.6'
     annotationProcessor 'org.parceler:parceler:1.1.6'
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
