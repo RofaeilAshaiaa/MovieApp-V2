@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,14 +19,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MainRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.RecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.PopularFragmentBinding;
 
 public class PopularFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
-        , RecyclerViewAdapter.ListItemClickListener {
+        , MainRecyclerViewAdapter.ListItemClickListener {
 
     private final int POPULAR_LOADER_ID = 11;
     private PopularFragmentBinding mBinding;
@@ -44,7 +43,7 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
         // Inflate the layout for this fragment
         mBinding = DataBindingUtil.inflate(inflater, R.layout.popular_fragment, container, false);
         mMainActivity = getActivity();
-        mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_review_subjects);
+        mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_main_activity);
         makeNetworkRequest();
         return mBinding.getRoot();
     }
@@ -78,7 +77,7 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
             mJsonObject = new JSONObject(data);
             JSONArray mMoviesJsonArray = mJsonObject.getJSONArray("results");
             mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
-            mBinding.rvPopular.setAdapter(new RecyclerViewAdapter(mMoviesList, getContext(), this));
+            mBinding.rvPopular.setAdapter(new MainRecyclerViewAdapter(mMoviesList, getContext(), this));
             GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
             mBinding.rvPopular.setLayoutManager(mLayoutManager);
         } catch (JSONException e) {

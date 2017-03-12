@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,14 +19,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MainRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.RecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.TopRatedFragmentBinding;
 
 public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
-        ,RecyclerViewAdapter.ListItemClickListener {
+        ,MainRecyclerViewAdapter.ListItemClickListener {
 
     private final int TOP_RATED_LOADER_ID = 22;
     private TopRatedFragmentBinding mBinding;
@@ -40,13 +39,12 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mBinding = DataBindingUtil.inflate(inflater, R.layout.top_rated_fragment, container, false);
         mMainActivity = getActivity() ;
-        mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_review_subjects);
+        mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_main_activity);
         makeNetworkRequest();
         return mBinding.getRoot();
 
@@ -64,7 +62,7 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
             mJsonObject = new JSONObject(data);
             JSONArray mMoviesJsonArray = mJsonObject.getJSONArray("results");
              mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
-            mBinding.rvTopRated.setAdapter( new RecyclerViewAdapter(mMoviesList,getContext() ,this));
+            mBinding.rvTopRated.setAdapter( new MainRecyclerViewAdapter(mMoviesList,getContext() ,this));
             GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
             mBinding.rvTopRated.setLayoutManager(mLayoutManager);
         } catch (JSONException e) {
