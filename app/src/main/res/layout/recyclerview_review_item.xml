@@ -7,6 +7,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
             app:cardCornerRadius="5dp">
 
                 <LinearLayout
@@ -21,13 +23,13 @@
 
                                 <TextView
                                     style="@style/text_view_trailors"
-
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="4dp"
                                     android:text="@string/author_label" />
 
                                 <TextView
+                                    android:id="@+id/tv_review_author"
                                     style="@style/text_views_in_movie_detail"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -38,7 +40,7 @@
 
                                 <ImageView
                                     android:padding="4dp"
-
+                                    android:id="@+id/iv_arrow_drop_down"
                                     android:layout_alignParentEnd="true"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -46,21 +48,21 @@
                         </RelativeLayout>
 
                         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
-                            android:id="@+id/expandableLayout1"
+                            android:id="@+id/expandableLayout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_below="@+id/expandableButton1"
-                            android:background="#90ba1f04"
-                            android:padding="16dp"
+                            android:background="@color/colorAccent"
+                            android:padding="8dp"
                             app:ael_duration="400"
                             app:ael_expanded="false"
                             app:ael_interpolator="bounce"
                             app:ael_orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/tv_expandable_layout"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Expandable Layout provides an easy way to create a view called header with an expandable view. Views are external layout to allow a maximum of customization." />
+                                    tools:text="Expandable Layout provides an easy way to create a view called header with an expandable view. Views are external layout to allow a maximum of customization." />
                         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
                 </LinearLayout>
 
