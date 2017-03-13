@@ -20,7 +20,7 @@
 
     <style name="text_view_trailors">
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="tv_review_content">
