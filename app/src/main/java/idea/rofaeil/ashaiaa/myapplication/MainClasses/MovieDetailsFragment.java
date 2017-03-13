@@ -3,28 +3,19 @@ package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -34,13 +25,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MainRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Review;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.ReviewsRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.TraitorsRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.MovieDetailsFragmentBinding;
+import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewReviewItemBinding;
 
-public class MovieDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>,TraitorsRecyclerViewAdapter.ListItemClickListener {
+public class MovieDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
+        ,TraitorsRecyclerViewAdapter.ListItemClickListener, ReviewsRecyclerViewAdapter.ListItemClickListener {
 
 
     private final int TOP_RATED_LOADER_ID = 33;
@@ -52,6 +46,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private StringBuilder URL;
     private int Movie_ID;
     private ArrayList<String> mTrailersList ;
+    private ArrayList<Review> mReviewList ;
 
     public MovieDetailsFragment() {
         // Required empty public constructor
@@ -59,11 +54,9 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Movie_ID = getArguments().getInt("id");
-
+        Movie_ID = getArguments().getInt(getString(R.string.movie_id_string));
         mBinding = DataBindingUtil.inflate(inflater, R.layout.movie_details_fragment, container, false);
         mDetailActivity = getActivity();
         mContext = getContext() ;
@@ -153,6 +146,28 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
     }
 
+    private void setReviewsMovie() throws JSONException {
+
+        JSONArray reviewList = response.getJSONObject("reviews").getJSONArray("results");
+        int numberOfReviews = reviewList.length();
+        mReviewList = new ArrayList<>(numberOfReviews);
+
+        for (int i = 0; i < numberOfReviews; i++) {
+
+            JSONObject reviewContentJsonObject = (JSONObject) reviewList.get(i);
+            String reviewContent = reviewContentJsonObject.getString("content");
+            String reviewAuthor = reviewContentJsonObject.getString("author");
+            Review review = new Review(reviewAuthor,reviewContent) ;
+            mReviewList.add(review);
+        }
+
+        if(numberOfReviews != 0){
+            mBinding.rvReviews.setAdapter(new ReviewsRecyclerViewAdapter(mReviewList,mContext, this));
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL ,false);
+            mBinding.rvReviews.setLayoutManager(mLayoutManager);
+        }
+    }
+
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         return new NetworkAsyncTaskLoader(mContext, URL.toString());
@@ -165,6 +180,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             response = new JSONObject(data) ;
             setBasicDataOfMovie();
             setTrailersMovie();
+            setReviewsMovie() ;
             mProgressBar.setVisibility(View.INVISIBLE);
             mBinding.clMovieDetails.setVisibility(View.VISIBLE);
 
@@ -180,10 +196,18 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     }
 
-
     @Override
-    public void onListItemTrailerClicked(int clickedItemIndex) {
-        openWebPage(mTrailersList.get(clickedItemIndex)) ;
+    public void onListItemReviewClicked(int clickedItemIndex, RecyclerviewReviewItemBinding itemBinding) {
+
+        if(itemBinding.expandableLayout.isExpanded()){
+            itemBinding.expandableLayout.collapse();
+            itemBinding.ivArrowDropDown.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+        }else {
+            itemBinding.expandableLayout.expand();
+            itemBinding.ivArrowDropDown.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+
+        }
+
     }
 
     public void openWebPage(String url) {
@@ -192,5 +216,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         if (intent.resolveActivity(mContext.getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onListItemTrailerClicked(int clickedItemIndex) {
+        openWebPage(mTrailersList.get(clickedItemIndex)) ;
     }
 }
