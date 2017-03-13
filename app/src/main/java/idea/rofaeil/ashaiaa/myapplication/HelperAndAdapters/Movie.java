@@ -10,13 +10,13 @@ import java.util.ArrayList;
 @Parcel
 public class Movie {
 
-    public int mMovieId;
-    public String mMoviePoster;
-    public String mMovieOverview;
-    public String mReleaseDate;
-    public String mMovieRuntime;
-    public String mOriginalTitle;
-    public String mVoteAverage;
+    public int MovieId;
+    public String MoviePoster;
+    public String MovieOverview;
+    public String ReleaseDate;
+    public String MovieRuntime;
+    public String OriginalTitle;
+    public String VoteAverage;
 
     public Movie() {
     }
@@ -41,58 +41,58 @@ public class Movie {
     }
 
     public String getMoviePoster() {
-        return mMoviePoster;
+        return MoviePoster;
     }
 
     public void setMoviePoster(String mMoviePoster) {
-        this.mMoviePoster = mMoviePoster;
+        this.MoviePoster = mMoviePoster;
     }
 
     public String getRuntime() {
-        return mMovieRuntime;
+        return MovieRuntime;
     }
 
     public void setRuntime(String runtime) {
-        this.mMovieRuntime = runtime;
+        this.MovieRuntime = runtime;
     }
 
     public String getMovieOverview() {
-        return mMovieOverview;
+        return MovieOverview;
     }
 
     public void setMovieOverview(String mMovieOverview) {
-        this.mMovieOverview = mMovieOverview;
+        this.MovieOverview = mMovieOverview;
     }
 
     public String getReleaseDate() {
-        return mReleaseDate;
+        return ReleaseDate;
     }
 
     public void setReleaseDate(String mReleaseDate) {
-        this.mReleaseDate = mReleaseDate;
+        this.ReleaseDate = mReleaseDate;
     }
 
     public int getMovieId() {
-        return mMovieId;
+        return MovieId;
     }
 
     public void setMovieId(int mMovieId) {
-        this.mMovieId = mMovieId;
+        this.MovieId = mMovieId;
     }
 
     public String getOriginalTitle() {
-        return mOriginalTitle;
+        return OriginalTitle;
     }
 
     public void setOriginalTitle(String mOriginalTitle) {
-        this.mOriginalTitle = mOriginalTitle;
+        this.OriginalTitle = mOriginalTitle;
     }
 
     public String getVoteAverage() {
-        return mVoteAverage;
+        return VoteAverage;
     }
 
     public void setVoteAverage(String mVoteAverage) {
-        this.mVoteAverage = mVoteAverage;
+        this.VoteAverage = mVoteAverage;
     }
 }
