@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -104,7 +105,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                     mDB = MoviesDbHelper.getInstance(mContext).getWritableDatabase();
                     MoviesDbHelper.addMovieToFavourites(mMovie, mDB, mContext);
                     mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
-                }            }
+                } else{
+                    Toast.makeText(mContext, "Movie Already in Favourites!", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 
