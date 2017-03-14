@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.*;
 
@@ -39,7 +40,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public static void addMovieToFavourites(Movie movie ,SQLiteDatabase mDB){
+    public static void addMovieToFavourites(Movie movie, SQLiteDatabase mDB, Context mContext){
         ContentValues cv = new ContentValues();
         cv.put(MovieEntry.COLUMN_NAME_MovieId , movie.getMovieId());
         cv.put(MovieEntry.COLUMN_NAME_MovieOverview , movie.getMovieOverview());
@@ -49,6 +50,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         cv.put(MovieEntry.COLUMN_NAME_ReleaseDate , movie.getReleaseDate());
         cv.put(MovieEntry.COLUMN_NAME_VoteAverage , movie.getVoteAverage());
           mDB.insert(MovieEntry.TABLE_NAME,null,cv) ;
+        Toast.makeText(mContext, "Movie Added to Favourites!", Toast.LENGTH_SHORT).show();
     }
 
     public static Cursor getAllMovies (SQLiteDatabase mDB){
