@@ -34,7 +34,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE "+
                 MovieEntry.TABLE_NAME+" (" +
-                MovieEntry.COLUMN_NAME_MovieId + " INTEGER NOT NULL," +
+                MovieEntry.COLUMN_NAME_MovieId + " INTEGER PRIMARY KEY," +
                 MovieEntry.COLUMN_NAME_OriginalTitle+ " TEXT NOT NULL," +
                 MovieEntry.COLUMN_NAME_MovieOverview+ " TEXT NOT NULL," +
                 MovieEntry.COLUMN_NAME_MovieRuntime+ " TEXT NOT NULL," +
@@ -77,4 +77,6 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 null                                 // The sort order
         );
     }
+
+
 }
