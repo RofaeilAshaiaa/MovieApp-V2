@@ -2,6 +2,7 @@ package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesDbHelper;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Review;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.ReviewsRecyclerViewAdapter;
@@ -38,7 +40,6 @@ import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewReviewItemBind
 
 public class MovieDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
         ,TraitorsRecyclerViewAdapter.ListItemClickListener, ReviewsRecyclerViewAdapter.ListItemClickListener {
-
 
     private final int TOP_RATED_LOADER_ID = 33;
     private MovieDetailsFragmentBinding mBinding;
@@ -57,7 +58,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -72,12 +72,13 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         return mBinding.getRoot();
     }
 
+
+
     private void setOnClickListenerFavouriteMeImage() {
         mBinding.ivAddToFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoviesDbHelper dbHelper = new MoviesDbHelper(mContext) ;
-                mDB = dbHelper.getWritableDatabase();
+                mDB = MoviesDbHelper.getInstance(mContext).getWritableDatabase();
                 MoviesDbHelper.addMovieToFavourites(mMovie , mDB ,mContext);
                 mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
             }
@@ -102,11 +103,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 //        }else {
 //            loaderManager.restartLoader(POPULAR_LOADER_ID,null,this).startLoading();
 //        }
-
     }
 
     private void setBasicDataOfMovie() throws JSONException {
         mMovie= new Movie() ;
+        mMovie.setMovieId(Movie_ID);
         String poster_path = response.getString("poster_path");
         StringBuilder base_url = new StringBuilder("http://image.tmdb.org/t/p/");
         base_url.append("w185/").append(poster_path);
