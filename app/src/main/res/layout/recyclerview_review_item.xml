@@ -15,9 +15,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    >
 
                         <RelativeLayout
+                            android:padding="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -25,7 +26,6 @@
                                     style="@style/text_view_trailors"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:padding="4dp"
                                     android:text="@string/author_label" />
 
                                 <TextView
@@ -33,13 +33,13 @@
                                     style="@style/text_views_in_movie_detail"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:padding="4dp"
                                     tools:text="rofaeil"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginRight="4dp"
                                     android:layout_alignParentTop="true"
                                     android:layout_centerHorizontal="true" />
 
                                 <ImageView
-                                    android:padding="4dp"
                                     android:id="@+id/iv_arrow_drop_down"
                                     android:layout_alignParentEnd="true"
                                     android:layout_width="wrap_content"
@@ -51,14 +51,14 @@
                             android:id="@+id/expandableLayout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/colorAccent"
+                            android:background="@color/colorPrimary"
                             android:padding="8dp"
                             app:ael_duration="400"
                             app:ael_expanded="false"
-                            app:ael_interpolator="bounce"
                             app:ael_orientation="vertical">
 
                                 <TextView
+                                    style="@style/tv_review_content"
                                     android:id="@+id/tv_expandable_layout"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
