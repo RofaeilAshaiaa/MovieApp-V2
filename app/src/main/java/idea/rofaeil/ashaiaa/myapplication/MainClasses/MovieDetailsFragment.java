@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Review;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.ReviewsRecyclerViewAdapter;
@@ -45,6 +46,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private FragmentActivity mDetailActivity;
     private StringBuilder URL;
     private int Movie_ID;
+    private Movie mMovie;
     private ArrayList<String> mTrailersList ;
     private ArrayList<Review> mReviewList ;
 
@@ -62,7 +64,20 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mContext = getContext() ;
         mProgressBar =  mBinding.pbMovieDetailsFragment;
         makeNetworkRequest();
+        setOnClickListenerFavouriteMeImage();
         return mBinding.getRoot();
+    }
+
+    private void setOnClickListenerFavouriteMeImage() {
+        mBinding.ivAddToFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+            }
+        });
     }
 
     private void makeNetworkRequest() {
@@ -92,31 +107,37 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         StringBuilder base_url = new StringBuilder("http://image.tmdb.org/t/p/");
         base_url.append("w185/").append(poster_path);
         String url = base_url.toString();
+        mMovie.setMoviePoster(url);
 
             Picasso.with(getActivity().getBaseContext()).load(url)
                     .error(R.drawable.ic_error_outline_black_24dp).fit()
                     .tag(getActivity().getBaseContext()).into(mBinding.ivMoviePoster);
 
-        String original_title = response.getString("original_title");
+        String originalTitle = response.getString("original_title");
+        mMovie.setOriginalTitle(originalTitle);
         if(true){
             Toolbar toolbar = (Toolbar) mDetailActivity.findViewById(R.id.tb_movie_details_activity);
-            toolbar.setTitle(original_title);
+            toolbar.setTitle(originalTitle);
 
         }else {
 
         }
 
-        String release_date = response.getString("release_date");
-        mBinding.tvRealseDate.setText(release_date);
+        String releaseDate = response.getString("release_date");
+        mMovie.setReleaseDate(releaseDate);
+        mBinding.tvRealseDate.setText(releaseDate);
 
         String runtime = response.getString("runtime");
+        mMovie.setRuntime(runtime);
         mBinding.tvMovieDuration.setText(runtime + "min.");
 
         double vote_average = response.getDouble("vote_average");
         float rating =(float) vote_average/2 ;
+        mMovie.setVoteAverage(Float.toString(rating));
         mBinding.rbMovieRating.setRating(rating);
 
         String overview = response.getString("overview");
+        mMovie.setMovieOverview(overview);
         mBinding.tvOverviewOfMovie.setText(overview);
 
     }
