@@ -44,8 +44,8 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         holder.itemBinding.rvImageViewItem.setMinimumHeight(MainActivity.targetY);
 
         Picasso.with(mContext).load(mMovieArrayList.get(position).getMoviePoster())
-                 .placeholder(R.drawable.ic_favorite_border_black_24dp)
-                .error(R.drawable.ic_language_black_24dp)
+                 .placeholder(R.drawable.ic_autorenew_black_24dp)
+                .error(R.drawable.ic_error_outline_black_24dp)
                 .fit().into(holder.itemBinding.rvImageViewItem);
     }
 
