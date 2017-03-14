@@ -51,6 +51,9 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
 
     @Override
     public int getItemCount() {
+
+        if(mMovieArrayList == null )return 0 ;
+
         return mMovieArrayList.size();
     }
 
