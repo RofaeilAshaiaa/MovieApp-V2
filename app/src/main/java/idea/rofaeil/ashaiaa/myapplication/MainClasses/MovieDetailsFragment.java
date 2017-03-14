@@ -70,10 +70,31 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mProgressBar =  mBinding.pbMovieDetailsFragment;
         makeNetworkRequest();
         setOnClickListenerFavouriteMeImage();
+        ChangeImageOfFavouriteMeIcon();
         return mBinding.getRoot();
     }
 
+    private void ChangeImageOfFavouriteMeIcon() {
 
+        mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase();
+        Cursor cursor = MoviesDbHelper.getAllMovies(mDB);
+        int numberOfMovies = cursor.getCount();
+        if(numberOfMovies == 0 ) return;
+        cursor.moveToFirst() ;
+
+        for (int i = 0; i < numberOfMovies; i++) {
+
+            int currentID = cursor.getInt(cursor.getColumnIndex(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieId)) ;
+            if(Movie_ID == currentID){
+                mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
+                isFavorite =true ;
+                break;
+            }
+            cursor.moveToNext();
+        }
+
+
+    }
 
     private void setOnClickListenerFavouriteMeImage() {
         mBinding.ivAddToFavourite.setOnClickListener(new View.OnClickListener() {
