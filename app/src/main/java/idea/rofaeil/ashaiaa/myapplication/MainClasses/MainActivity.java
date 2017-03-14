@@ -28,13 +28,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
+        setLastSelectedFragment();
         setClickListenerNavigationBottom();
         setImageHeightValue();
 
-//        SharedPreferences mSharedPref = getApplicationContext()
-//                .getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE);
-//        int last_selected = mSharedPref.getInt(getString(R.string.last_selected), 199);
 
+    }
+
+    private void setLastSelectedFragment() {
+        SharedPreferences mSharedPref = getApplicationContext()
+                .getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE);
+        int last_selected = mSharedPref.getInt(getString(R.string.last_selected), 4);
+        if(last_selected != 4 ){
+            switch (last_selected ) {
+                case 3:
+                    mFragment = new FavouriteFragment();
+                    mBinding.toolbar.setTitle(getResources().getString(R.string.favorites));
+                    mBinding.bottomNavigation.getMenu().getItem(2).setChecked(true);
+                    break;
+                case 2:
+                    mFragment = new TopRatedFragment();
+                    mBinding.toolbar.setTitle(getResources().getString(R.string.top_rated));
+                    mBinding.bottomNavigation.getMenu().getItem(1).setChecked(true);
+                    break;
+                case 1:
+                    mFragment = new PopularFragment();
+                    mBinding.toolbar.setTitle(getResources().getString(R.string.popular));
+                    mBinding.bottomNavigation.getMenu().getItem(0).setChecked(true);
+                    break;
+            }
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_container, mFragment)
+                    .commit();
+        }
     }
 
     private void setImageHeightValue() {
@@ -82,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public static boolean isTwoPane(FragmentActivity activity ) {
+    public static boolean isTwoPane(FragmentActivity activity) {
 
 //        activity.findViewById()
 
