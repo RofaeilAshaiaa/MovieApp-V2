@@ -2,6 +2,7 @@ package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesDbHelper;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Review;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.ReviewsRecyclerViewAdapter;
@@ -62,6 +64,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mBinding = DataBindingUtil.inflate(inflater, R.layout.movie_details_fragment, container, false);
         mDetailActivity = getActivity();
         mContext = getContext() ;
+
         mProgressBar =  mBinding.pbMovieDetailsFragment;
         makeNetworkRequest();
         setOnClickListenerFavouriteMeImage();
@@ -72,9 +75,9 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mBinding.ivAddToFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
+                MoviesDbHelper dbHelper = new MoviesDbHelper(mContext) ;
+                SQLiteDatabase mDB = dbHelper.getWritableDatabase();
+                MoviesDbHelper.addMovieToFavourites(mMovie , mDB ,mContext);
 
             }
         });
@@ -102,7 +105,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     }
 
     private void setBasicDataOfMovie() throws JSONException {
-
+        mMovie= new Movie() ;
         String poster_path = response.getString("poster_path");
         StringBuilder base_url = new StringBuilder("http://image.tmdb.org/t/p/");
         base_url.append("w185/").append(poster_path);
