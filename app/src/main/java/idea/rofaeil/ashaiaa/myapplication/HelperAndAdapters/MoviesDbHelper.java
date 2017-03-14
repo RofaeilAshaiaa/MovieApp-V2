@@ -78,5 +78,22 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         );
     }
 
+    public static Cursor isMovieExist (SQLiteDatabase mDB , int id){
 
+        return mDB.query(
+                MoviesReaderContract.MovieEntry.TABLE_NAME,// The table to query
+                null,                               // The columns to return
+                MovieEntry.COLUMN_NAME_MovieId+"= ?",   // The columns for the WHERE clause
+                new String[]  { Integer.toString(id) }, // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                   // don't filter by row groups
+                null                                 // The sort order
+        );
+
+//
+//        return mDB.rawQuery("SELECT * FROM "+MoviesReaderContract.MovieEntry.TABLE_NAME +
+//                        "WHERE "+ MovieEntry.COLUMN_NAME_MovieId+"= ?"
+//                ,new String[]  {Integer.toString(id) }) ;
+
+    }
 }
