@@ -49,6 +49,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private FragmentActivity mDetailActivity;
     private StringBuilder URL;
     private int Movie_ID;
+    private boolean isFavorite;
     private SQLiteDatabase mDB ;
     private Movie mMovie;
     private ArrayList<String> mTrailersList ;
@@ -78,10 +79,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mBinding.ivAddToFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDB = MoviesDbHelper.getInstance(mContext).getWritableDatabase();
-                MoviesDbHelper.addMovieToFavourites(mMovie , mDB ,mContext);
-                mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
-            }
+                if(isFavorite != true) {
+                    mDB = MoviesDbHelper.getInstance(mContext).getWritableDatabase();
+                    MoviesDbHelper.addMovieToFavourites(mMovie, mDB, mContext);
+                    mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
+                }            }
         });
     }
 
