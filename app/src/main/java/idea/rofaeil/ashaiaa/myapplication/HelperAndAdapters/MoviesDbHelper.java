@@ -11,11 +11,23 @@ import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderC
 
 public class MoviesDbHelper extends SQLiteOpenHelper {
 
+    private static MoviesDbHelper sInstance;
     private static final String DATABASE_NAME = "movies.db" ;
     private static final int DATABASE_VERSION  = 1 ;
 
-    public MoviesDbHelper(Context context) {
+    private MoviesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized MoviesDbHelper getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new MoviesDbHelper(context.getApplicationContext());
+        }
+        return sInstance;
     }
 
     @Override
