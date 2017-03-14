@@ -39,7 +39,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public static long addMovieToFavourites(Movie movie ,SQLiteDatabase mDB){
+    public static void addMovieToFavourites(Movie movie ,SQLiteDatabase mDB){
         ContentValues cv = new ContentValues();
         cv.put(MovieEntry.COLUMN_NAME_MovieId , movie.getMovieId());
         cv.put(MovieEntry.COLUMN_NAME_MovieOverview , movie.getMovieOverview());
@@ -48,8 +48,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         cv.put(MovieEntry.COLUMN_NAME_OriginalTitle , movie.getOriginalTitle());
         cv.put(MovieEntry.COLUMN_NAME_ReleaseDate , movie.getReleaseDate());
         cv.put(MovieEntry.COLUMN_NAME_VoteAverage , movie.getVoteAverage());
-        return  mDB.insert(MovieEntry.TABLE_NAME,null,cv) ;
-
+          mDB.insert(MovieEntry.TABLE_NAME,null,cv) ;
     }
 
     public static Cursor getAllMovies (SQLiteDatabase mDB){
