@@ -1,22 +1,47 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import org.parceler.Parcels;
+
+import java.util.ArrayList;
+
+import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.*;
+import static idea.rofaeil.ashaiaa.myapplication.MainClasses.MainActivity.isTwoPane;
+
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MainRecyclerViewAdapter;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesDbHelper;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.FavouriteFragmentBinding;
 
-public class FavouriteFragment extends Fragment {
+public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapter.ListItemClickListener {
 
     private final int TOP_RATED_LOADER_ID = 33;
     private FavouriteFragmentBinding mBinding;
-    private ProgressBar mProgressBar;
+    private ArrayList<Movie> mMoviesList;
+    private MainRecyclerViewAdapter mAdapter ;
+    private Context mContext ;
+    private FragmentActivity mMainActivity;
+//    private ProgressBar mProgressBar;
+    private SQLiteDatabase mDB;
 
     public FavouriteFragment() {
         // Required empty public constructor
@@ -27,7 +52,9 @@ public class FavouriteFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         mBinding = DataBindingUtil.inflate(inflater, R.layout.favourite_fragment, container, false);
-        mProgressBar = (ProgressBar) getActivity().findViewById(R.id.progress_bar_review_subjects);
+        mMainActivity= getActivity() ;
+        mContext = getContext() ;
+//        mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_main_activity);
         return mBinding.getRoot();
 
     }
@@ -35,10 +62,59 @@ public class FavouriteFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-//        mBinding.rvFavourite.setAdapter( new RecyclerViewAdapter(new ArrayList<Movie>(4) ,getContext() ));
-//
-//        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
-//
-//        mBinding.rvFavourite.setLayoutManager(mLayoutManager);
+
+        mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase() ;
+        Cursor cursor = MoviesDbHelper.getAllMovies(mDB) ;
+        extractMovies(cursor);
+
+        if(mMoviesList != null ){
+            mAdapter = new MainRecyclerViewAdapter( mMoviesList ,mContext,this ) ;
+            mBinding.rvFavourite.setAdapter(mAdapter );
+            GridLayoutManager mLayoutManager = new GridLayoutManager( mContext,2);
+            mBinding.rvFavourite.setLayoutManager(mLayoutManager);
+        }else {
+//            View rootView = mMainActivity.getWindow().getDecorView().findViewById(R.id.main_activity_layout);
+//            View rootView = mMainActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+//            Snackbar.make(rootView
+//                    , "R.string.snackbar_text_no_favourites", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show();
+            Toast.makeText(mContext, R.string.snackbar_text_no_favourites, Toast.LENGTH_SHORT).show();
+        }
+
     }
+
+    private void extractMovies(Cursor cursor) {
+
+        int numberOfMovies = cursor.getCount();
+        if(numberOfMovies == 0 ) return;
+        mMoviesList = new ArrayList<>(numberOfMovies) ;
+        cursor.moveToFirst() ;
+        for (int i = 0; i < numberOfMovies; i++) {
+
+            Movie movie = new Movie();
+            movie.setMovieId(cursor.getInt(cursor.getColumnIndex(MovieEntry.COLUMN_NAME_MovieId)));
+            movie.setMovieOverview(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_NAME_MovieOverview)));
+            movie.setMoviePoster(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_NAME_MoviePoster)));
+            movie.setRuntime(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_NAME_MovieRuntime)));
+            movie.setOriginalTitle(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_NAME_OriginalTitle)));
+            movie.setReleaseDate(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_NAME_ReleaseDate)));
+            movie.setVoteAverage(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_NAME_VoteAverage)));
+            mMoviesList.add(movie);
+            cursor.moveToNext();
+        }
+
+    }
+
+    @Override
+    public void onListItemClicked(int clickedItemIndex) {
+
+        if ( isTwoPane ) {
+
+        } else {
+            Intent intent = new Intent(mMainActivity, DetailFavouriteActivity.class);
+            intent.putExtra(getString(R.string.movie_string_parcel), Parcels.wrap(mMoviesList.get(clickedItemIndex)));
+            startActivity(intent);
+        }
+    }
+
 }
