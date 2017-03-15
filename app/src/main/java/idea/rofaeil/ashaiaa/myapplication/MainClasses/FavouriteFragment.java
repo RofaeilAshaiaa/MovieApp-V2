@@ -60,6 +60,7 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
         mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase() ;
         Cursor cursor = MoviesDbHelper.getAllMovies(mDB) ;
         extractMovies(cursor);
+        cursor.close();
 
         if(mMoviesList != null ){
             mAdapter = new MainRecyclerViewAdapter( mMoviesList ,mContext,this ) ;
