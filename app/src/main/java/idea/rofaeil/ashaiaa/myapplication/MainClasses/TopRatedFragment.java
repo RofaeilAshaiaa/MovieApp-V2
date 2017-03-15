@@ -81,21 +81,31 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
         mProgressBar.setVisibility(View.VISIBLE);
         LoaderManager loaderManager = mMainActivity.getSupportLoaderManager() ;
         Loader<String> popularLoader = loaderManager.getLoader(TOP_RATED_LOADER_ID);
-        loaderManager.initLoader(TOP_RATED_LOADER_ID,null,this).forceLoad();
 
-//        if(popularLoader == null)
-//        {
-//          loaderManager.initLoader(POPULAR_LOADER_ID,null,this).forceLoad();
-//        }else {
-//            loaderManager.restartLoader(POPULAR_LOADER_ID,null,this).startLoading();
-//        }
+        if(popularLoader == null)
+        {
+          loaderManager.initLoader(TOP_RATED_LOADER_ID,null,this).forceLoad();
+        }else {
+            loaderManager.restartLoader(TOP_RATED_LOADER_ID,null,this).forceLoad();
+        }
 
     }
 
     @Override
     public void onListItemClicked(int clickedItemIndex) {
 
-        if (MainActivity.isTwoPane(mMainActivity)) {
+        if (MainActivity.isTwoPane) {
+
+            Bundle bundle = new Bundle() ;
+            bundle.putInt(getString(R.string.movie_id_string),mMoviesList.get(clickedItemIndex).getMovieId());
+
+            Fragment mFragment = new MovieDetailsFragment();
+            mFragment.setArguments(bundle);
+
+            mMainActivity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_container_details , mFragment)
+                    .commit();
 
         } else {
             Intent intent = new Intent(mMainActivity, MovieDetailsActivity.class);

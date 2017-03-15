@@ -10,27 +10,21 @@
         android:fitsSystemWindows="true"
         tools:context="idea.rofaeil.ashaiaa.myapplication.MainClasses.MovieDetailsActivity">
 
-        <FrameLayout
-            android:id="@+id/tv_movie_name_container"
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimary"
-            android:visibility="invisible"
-            android:layout_height="?attr/actionBarSize"/>
         <android.support.v7.widget.Toolbar
             android:id="@+id/tb_movie_details_activity"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:title="Movie"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="Movie"
             app:titleTextColor="@android:color/black" />
 
         <FrameLayout
             android:id="@+id/details_fragment_container"
-            android:layout_marginTop="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>

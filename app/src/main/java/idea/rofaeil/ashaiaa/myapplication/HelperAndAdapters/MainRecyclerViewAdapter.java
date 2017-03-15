@@ -58,7 +58,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     }
 
     public interface ListItemClickListener{
-        public void onListItemClicked(int clickedItemIndex);
+        void onListItemClicked(int clickedItemIndex);
     }
 
     public  class myViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

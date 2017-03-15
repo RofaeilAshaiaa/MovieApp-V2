@@ -11,7 +11,6 @@
     <style name="recycler_view">
         <item name="android:layout_height"> match_parent</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginBottom">?attr/actionBarSize</item>
     </style>
     <style name="text_views_in_movie_detail">
         <item name="android:textColor">@android:color/black</item>

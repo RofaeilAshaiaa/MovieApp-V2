@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/movie_details_fragment"
+        android:id="@+id/movie_details_fragment_favourite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         tools:context="idea.rofaeil.ashaiaa.myapplication.MainClasses.MovieDetailsFragment">
 
         <ProgressBar
-            android:id="@+id/pb_movie_details_fragment"
+            android:id="@+id/pb_movie_details_fragment_favourite"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +29,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/iv_movie_poster"
+                    android:id="@+id/iv_movie_poster_favourite"
                     android:layout_width="180dp"
                     android:layout_height="220dp"
                     android:layout_marginLeft="16dp"
@@ -38,7 +40,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_realse_date"
+                    android:id="@+id/tv_realse_date_favourite"
                     style="@style/text_views_in_movie_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,26 +49,26 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_movie_poster"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_movie_poster_favourite"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="release date" />
 
                 <TextView
-                    android:id="@+id/tv_movie_duration"
+                    android:id="@+id/tv_movie_duration_favourite"
                     style="@style/text_views_in_movie_detail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_realse_date"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_realse_date_favourite"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_realse_date"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_realse_date_favourite"
                     tools:text="duration" />
 
                 <RatingBar
-                    android:id="@+id/rb_movie_rating"
+                    android:id="@+id/rb_movie_rating_favourite"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -74,11 +76,11 @@
                     android:layout_marginTop="16dp"
                     android:numStars="5"
                     android:stepSize="0.5"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_movie_duration"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_movie_duration" />
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_movie_duration_favourite"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_movie_duration_favourite" />
 
                 <TextView
-                    android:id="@+id/tv_overview_of_movie"
+                    android:id="@+id/tv_overview_of_movie_favourite"
                     style="@style/text_views_in_movie_detail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -87,71 +89,22 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="@+id/iv_movie_poster"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_movie_poster_favourite"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_movie_poster"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_movie_poster_favourite"
                     tools:text="Overview" />
 
-                <TextView
-                    android:id="@+id/tv_trailor_label"
-                    style="@style/text_views_in_movie_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Trailors"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_overview_of_movie" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_trailors"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="24dp"
-                    android:paddingBottom="8dp"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_trailor_label">
-
-                </android.support.v7.widget.RecyclerView>
-
-                <TextView
-                    android:id="@+id/tv_reviews_label"
-                    style="@style/text_views_in_movie_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Reviews"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_trailor_label"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_trailors" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_reviews"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="24dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_reviews_label" />
-
                 <ImageView
-                    android:id="@+id/iv_add_to_favourite"
+                    android:id="@+id/iv_add_to_favourite_in_favourite"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginBottom="0dp"
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="8dp"
                     android:clickable="true"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_movie_poster"
-                    app:layout_constraintLeft_toLeftOf="@+id/rb_movie_rating"
-                    app:layout_constraintTop_toBottomOf="@+id/rb_movie_rating"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_movie_poster_favourite"
+                    app:layout_constraintLeft_toLeftOf="@+id/rb_movie_rating_favourite"
+                    app:layout_constraintTop_toBottomOf="@+id/rb_movie_rating_favourite"
                     app:srcCompat="@drawable/ic_favorite_orange_24dp"
                     tools:ignore="VectorDrawableCompat" />
 

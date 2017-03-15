@@ -4,7 +4,10 @@
     <string name="top_rated">Top Rated</string>
     <string name="favorites">Favorites</string>
     <string name="preference_file_name">Preferences_app</string>
-    <string name="last_selected" >last_selected</string>
-    <string name="movie_id_string" >id</string>
+    <string name="last_selected">last_selected</string>
+    <string name="movie_id_string">id</string>
+    <string name="author_label">Author :</string>
+    <string name="snackbar_text_no_favourites">No Favourites yet!</string>
+    <string name="movie_string_parcel">movie</string>
 
 </resources>

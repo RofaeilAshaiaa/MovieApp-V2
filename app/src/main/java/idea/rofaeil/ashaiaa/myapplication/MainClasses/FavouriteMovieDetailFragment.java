@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +23,7 @@ public class FavouriteMovieDetailFragment extends Fragment {
 
     private FavouriteMovieDetailFragmentBinding mBinding;
 
-    private FragmentActivity mDetailFavouriteActivity;
+    private FragmentActivity mParentActivity;
 
     public FavouriteMovieDetailFragment() {
         // Required empty public constructor
@@ -34,9 +35,9 @@ public class FavouriteMovieDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        Movie movie = Parcels.unwrap(  getArguments().getParcelable( getString(R.string.movie_string_parcel) )  );
+        Movie movie = Parcels.unwrap(getArguments().getParcelable(getString(R.string.movie_string_parcel)));
         mBinding = DataBindingUtil.inflate(inflater, R.layout.favourite_movie_detail_fragment, container, false);
-        mDetailFavouriteActivity = getActivity() ;
+        mParentActivity = getActivity();
 
         Picasso.with(getActivity().getBaseContext()).load(movie.getMoviePoster())
                 .error(R.drawable.ic_error_outline_black_24dp).fit()
@@ -45,15 +46,15 @@ public class FavouriteMovieDetailFragment extends Fragment {
         mBinding.ivAddToFavouriteInFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
         mBinding.tvMovieDurationFavourite.setText(movie.getRuntime());
         mBinding.tvOverviewOfMovieFavourite.setText(movie.MovieOverview);
-        mBinding.rbMovieRatingFavourite.setRating( Float.parseFloat(movie.getVoteAverage() ) );
+        mBinding.rbMovieRatingFavourite.setRating(Float.parseFloat(movie.getVoteAverage()));
         mBinding.tvRealseDateFavourite.setText(movie.getReleaseDate());
 
-        if(true){
-            Toolbar toolbar = (Toolbar) mDetailFavouriteActivity.findViewById(R.id.tb_movie_details_activity);
+        if (MainActivity.isTwoPane) {
+            TextView textView = (TextView) mParentActivity.findViewById(R.id.tv_movie_name_container);
+            textView.setText(movie.getOriginalTitle());
+        } else {
+            Toolbar toolbar = (Toolbar) mParentActivity.findViewById(R.id.tb_movie_details_activity);
             toolbar.setTitle(movie.getOriginalTitle());
-
-        }else {
-
         }
 
         return mBinding.getRoot();

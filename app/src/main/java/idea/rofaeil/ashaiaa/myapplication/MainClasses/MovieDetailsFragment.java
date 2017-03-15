@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -40,21 +40,21 @@ import idea.rofaeil.ashaiaa.myapplication.databinding.MovieDetailsFragmentBindin
 import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewReviewItemBinding;
 
 public class MovieDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
-        ,TraitorsRecyclerViewAdapter.ListItemClickListener, ReviewsRecyclerViewAdapter.ListItemClickListener {
+        , TraitorsRecyclerViewAdapter.ListItemClickListener, ReviewsRecyclerViewAdapter.ListItemClickListener {
 
-    private final int TOP_RATED_LOADER_ID = 33;
+    private final int Movie_DETAILS_LOADER_ID = 33;
     private MovieDetailsFragmentBinding mBinding;
     private ProgressBar mProgressBar;
-    private JSONObject response ;
-    private Context mContext ;
-    private FragmentActivity mDetailActivity;
+    private JSONObject response;
+    private Context mContext;
+    private FragmentActivity mParentActivity;
     private StringBuilder URL;
     private int Movie_ID;
     private boolean isFavorite;
-    private SQLiteDatabase mDB ;
+    private SQLiteDatabase mDB;
     private Movie mMovie;
-    private ArrayList<String> mTrailersList ;
-    private ArrayList<Review> mReviewList ;
+    private ArrayList<String> mTrailersList;
+    private ArrayList<Review> mReviewList;
 
     public MovieDetailsFragment() {
         // Required empty public constructor
@@ -65,10 +65,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         Movie_ID = getArguments().getInt(getString(R.string.movie_id_string));
         mBinding = DataBindingUtil.inflate(inflater, R.layout.movie_details_fragment, container, false);
-        mDetailActivity = getActivity();
-        mContext = getContext() ;
+        mParentActivity = getActivity();
+        mContext = getContext();
 
-        mProgressBar =  mBinding.pbMovieDetailsFragment;
+        mProgressBar = mBinding.pbMovieDetailsFragment;
         makeNetworkRequest();
         setOnClickListenerFavouriteMeImage();
         ChangeImageOfFavouriteMeIcon();
@@ -80,15 +80,15 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase();
         Cursor cursor = MoviesDbHelper.getAllMovies(mDB);
         int numberOfMovies = cursor.getCount();
-        if(numberOfMovies == 0 ) return;
-        cursor.moveToFirst() ;
+        if (numberOfMovies == 0) return;
+        cursor.moveToFirst();
 
         for (int i = 0; i < numberOfMovies; i++) {
 
-            int currentID = cursor.getInt(cursor.getColumnIndex(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieId)) ;
-            if(Movie_ID == currentID){
+            int currentID = cursor.getInt(cursor.getColumnIndex(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieId));
+            if (Movie_ID == currentID) {
                 mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
-                isFavorite =true ;
+                isFavorite = true;
                 break;
             }
             cursor.moveToNext();
@@ -101,11 +101,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mBinding.ivAddToFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isFavorite != true) {
+                if (isFavorite != true) {
                     mDB = MoviesDbHelper.getInstance(mContext).getWritableDatabase();
                     MoviesDbHelper.addMovieToFavourites(mMovie, mDB, mContext);
                     mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
-                } else{
+                } else {
                     Toast.makeText(mContext, "Movie Already in Favourites!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -120,20 +120,19 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         mProgressBar.setVisibility(View.VISIBLE);
         mBinding.clMovieDetails.setVisibility(View.INVISIBLE);
-        LoaderManager loaderManager = mDetailActivity.getSupportLoaderManager();
-        //Loader<String> popularLoader = loaderManager.getLoader(TOP_RATED_LOADER_ID);
-        loaderManager.initLoader(TOP_RATED_LOADER_ID, null, this).forceLoad();
+        LoaderManager loaderManager = mParentActivity.getSupportLoaderManager();
+        Loader<String> popularLoader = loaderManager.getLoader(Movie_DETAILS_LOADER_ID);
 
-//        if(popularLoader == null)
-//        {
-//          loaderManager.initLoader(POPULAR_LOADER_ID,null,this).forceLoad();
-//        }else {
-//            loaderManager.restartLoader(POPULAR_LOADER_ID,null,this).startLoading();
-//        }
+        if(popularLoader == null)
+        {
+          loaderManager.initLoader(Movie_DETAILS_LOADER_ID,null,this).forceLoad();
+        }else {
+            loaderManager.restartLoader(Movie_DETAILS_LOADER_ID,null,this).forceLoad();
+        }
     }
 
     private void setBasicDataOfMovie() throws JSONException {
-        mMovie= new Movie() ;
+        mMovie = new Movie();
         mMovie.setMovieId(Movie_ID);
         String poster_path = response.getString("poster_path");
         StringBuilder base_url = new StringBuilder("http://image.tmdb.org/t/p/");
@@ -141,18 +140,18 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         String url = base_url.toString();
         mMovie.setMoviePoster(url);
 
-            Picasso.with(getActivity().getBaseContext()).load(url)
-                    .error(R.drawable.ic_error_outline_black_24dp).fit()
-                    .tag(getActivity().getBaseContext()).into(mBinding.ivMoviePoster);
+        Picasso.with(getActivity().getBaseContext()).load(url)
+                .error(R.drawable.ic_error_outline_black_24dp).fit()
+                .tag(getActivity().getBaseContext()).into(mBinding.ivMoviePoster);
 
         String originalTitle = response.getString("original_title");
         mMovie.setOriginalTitle(originalTitle);
-        if(true){
-            Toolbar toolbar = (Toolbar) mDetailActivity.findViewById(R.id.tb_movie_details_activity);
+        if (MainActivity.isTwoPane) {
+            TextView textView = (TextView) mParentActivity.findViewById(R.id.tv_movie_name_container);
+            textView.setText(originalTitle);
+        } else {
+            Toolbar toolbar = (Toolbar) mParentActivity.findViewById(R.id.tb_movie_details_activity);
             toolbar.setTitle(originalTitle);
-
-        }else {
-
         }
 
         String releaseDate = response.getString("release_date");
@@ -164,7 +163,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mBinding.tvMovieDuration.setText(runtime + "min.");
 
         double vote_average = response.getDouble("vote_average");
-        float rating =(float) vote_average/2 ;
+        float rating = (float) vote_average / 2;
         mMovie.setVoteAverage(Float.toString(rating));
         mBinding.rbMovieRating.setRating(rating);
 
@@ -191,10 +190,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         }
 
-        if(numberOfTrailers != 0  ){
+        if (numberOfTrailers != 0) {
 
-            mBinding.rvTrailors.setAdapter(new TraitorsRecyclerViewAdapter(mTrailersList,mContext, this));
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL ,false);
+            mBinding.rvTrailors.setAdapter(new TraitorsRecyclerViewAdapter(mTrailersList, mContext, this));
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             mBinding.rvTrailors.setLayoutManager(mLayoutManager);
         }
     }
@@ -210,13 +209,13 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             JSONObject reviewContentJsonObject = (JSONObject) reviewList.get(i);
             String reviewContent = reviewContentJsonObject.getString("content");
             String reviewAuthor = reviewContentJsonObject.getString("author");
-            Review review = new Review(reviewAuthor,reviewContent) ;
+            Review review = new Review(reviewAuthor, reviewContent);
             mReviewList.add(review);
         }
 
-        if(numberOfReviews != 0){
-            mBinding.rvReviews.setAdapter(new ReviewsRecyclerViewAdapter(mReviewList,mContext, this));
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL ,false);
+        if (numberOfReviews != 0) {
+            mBinding.rvReviews.setAdapter(new ReviewsRecyclerViewAdapter(mReviewList, mContext, this));
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             mBinding.rvReviews.setLayoutManager(mLayoutManager);
         }
     }
@@ -230,17 +229,17 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     public void onLoadFinished(Loader<String> loader, String data) {
 
         try {
-            response = new JSONObject(data) ;
+            response = new JSONObject(data);
             setBasicDataOfMovie();
             setTrailersMovie();
-            setReviewsMovie() ;
+            setReviewsMovie();
             mProgressBar.setVisibility(View.INVISIBLE);
             mBinding.clMovieDetails.setVisibility(View.VISIBLE);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
+
 
     }
 
@@ -252,10 +251,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onListItemReviewClicked(int clickedItemIndex, RecyclerviewReviewItemBinding itemBinding) {
 
-        if(itemBinding.expandableLayout.isExpanded()){
+        if (itemBinding.expandableLayout.isExpanded()) {
             itemBinding.expandableLayout.collapse();
             itemBinding.ivArrowDropDown.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
-        }else {
+        } else {
             itemBinding.expandableLayout.expand();
             itemBinding.ivArrowDropDown.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
 
@@ -273,6 +272,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onListItemTrailerClicked(int clickedItemIndex) {
-        openWebPage(mTrailersList.get(clickedItemIndex)) ;
+        openWebPage(mTrailersList.get(clickedItemIndex));
     }
 }

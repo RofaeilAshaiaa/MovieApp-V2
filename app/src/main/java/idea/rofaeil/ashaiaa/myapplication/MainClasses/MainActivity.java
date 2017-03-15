@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -21,18 +20,19 @@ public class MainActivity extends AppCompatActivity {
             {"http://api.themoviedb.org/3/movie/popular?api_key=27c5319da038dffe1e6957609d9797a0",
                     "http://api.themoviedb.org/3/movie/top_rated?api_key=27c5319da038dffe1e6957609d9797a0"};
     public static int targetY;
+    public static boolean isTwoPane ;
     private Fragment mFragment;
     private MainActivityBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         setLastSelectedFragment();
         setClickListenerNavigationBottom();
         setImageHeightValue();
-
-
+        isTwoPane = isTwoPane() ;
     }
 
     private void setLastSelectedFragment() {
@@ -110,11 +110,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public static boolean isTwoPane(FragmentActivity activity) {
+    private boolean isTwoPane() {
 
-//        activity.findViewById()
-
-        return false;
+//        View view = mBinding.mainContainerDetails ;
+//        if (findViewById(R.id.main_container_details) != null )return true;
+//        if ( view != null )return true;
+        if (  mBinding.mainContainerDetails != null )return true;
+        else return false;
     }
 
 }

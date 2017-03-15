@@ -6,6 +6,8 @@
         android:id="@+id/movie_details_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         tools:context="idea.rofaeil.ashaiaa.myapplication.MainClasses.MovieDetailsFragment">
 
         <ProgressBar

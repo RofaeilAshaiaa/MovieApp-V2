@@ -29,9 +29,9 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
         , MainRecyclerViewAdapter.ListItemClickListener {
 
     private final int POPULAR_LOADER_ID = 11;
+    ArrayList<Movie> mMoviesList;
     private PopularFragmentBinding mBinding;
     private ProgressBar mProgressBar;
-    ArrayList<Movie> mMoviesList;
     private FragmentActivity mMainActivity;
 
     public PopularFragment() {
@@ -53,14 +53,13 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
         mProgressBar.setVisibility(View.VISIBLE);
         LoaderManager loaderManager = getActivity().getSupportLoaderManager();
         Loader<String> popularLoader = loaderManager.getLoader(POPULAR_LOADER_ID);
-        loaderManager.initLoader(POPULAR_LOADER_ID, null, this).forceLoad();
 
-//        if(popularLoader == null)
-//        {
-//          loaderManager.initLoader(POPULAR_LOADER_ID,null,this).forceLoad();
-//        }else {
-//            loaderManager.restartLoader(POPULAR_LOADER_ID,null,this).startLoading();
-//        }
+        if(popularLoader == null)
+        {
+          loaderManager.initLoader(POPULAR_LOADER_ID,null,this).forceLoad();
+        }else {
+            loaderManager.restartLoader(POPULAR_LOADER_ID,null,this).forceLoad();
+        }
 
     }
 
@@ -94,7 +93,18 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onListItemClicked(int clickedItemIndex) {
 
-        if (MainActivity.isTwoPane(mMainActivity)) {
+        if (MainActivity.isTwoPane) {
+
+            Bundle bundle = new Bundle() ;
+            bundle.putInt(getString(R.string.movie_id_string),mMoviesList.get(clickedItemIndex).getMovieId());
+
+            Fragment mFragment = new MovieDetailsFragment();
+            mFragment.setArguments(bundle);
+
+            mMainActivity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_container_details , mFragment)
+                    .commit();
 
         } else {
             Intent intent = new Intent(mMainActivity, MovieDetailsActivity.class);

@@ -1,40 +1,34 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.*;
-import static idea.rofaeil.ashaiaa.myapplication.MainClasses.MainActivity.isTwoPane;
-
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MainRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesDbHelper;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.FavouriteFragmentBinding;
 
+import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.MovieEntry;
+
 public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapter.ListItemClickListener {
 
-    private final int TOP_RATED_LOADER_ID = 33;
     private FavouriteFragmentBinding mBinding;
     private ArrayList<Movie> mMoviesList;
     private MainRecyclerViewAdapter mAdapter ;
@@ -108,7 +102,18 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
     @Override
     public void onListItemClicked(int clickedItemIndex) {
 
-        if ( isTwoPane ) {
+        if ( MainActivity.isTwoPane ) {
+
+            Bundle bundle = new Bundle() ;
+            bundle.putParcelable(getString(R.string.movie_string_parcel), Parcels.wrap(mMoviesList.get(clickedItemIndex)) );
+
+            Fragment mFragment = new FavouriteMovieDetailFragment();
+            mFragment.setArguments(bundle);
+
+            mMainActivity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_container_details, mFragment)
+                    .commit();
 
         } else {
             Intent intent = new Intent(mMainActivity, DetailFavouriteActivity.class);
