@@ -53,6 +53,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private boolean isFavorite;
     private SQLiteDatabase mDB;
     private Movie mMovie;
+    private Toast mToast ;
     private ArrayList<String> mTrailersList;
     private ArrayList<Review> mReviewList;
 
@@ -113,9 +114,14 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 if (isFavorite != true) {
                     mDB = MoviesDbHelper.getInstance(mContext).getWritableDatabase();
                     MoviesDbHelper.addMovieToFavourites(mMovie, mDB, mContext);
+                    isFavorite =true;
                     mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
+                    Toast.makeText(mContext, "Movie Added to Favourites!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(mContext, "Movie Already in Favourites!", Toast.LENGTH_SHORT).show();
+                    MoviesDbHelper.deleteMovieFromFavourite(mDB, mMovie.getOriginalTitle());
+                    mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_orange_24dp);
+                    isFavorite =false ;
+                    Toast.makeText(mContext, "Movie Removed from Favourites!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
