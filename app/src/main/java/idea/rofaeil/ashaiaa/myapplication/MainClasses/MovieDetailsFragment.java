@@ -71,11 +71,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mProgressBar = mBinding.pbMovieDetailsFragment;
         makeNetworkRequest();
         setOnClickListenerFavouriteMeImage();
-        ChangeImageOfFavouriteMeIcon();
         return mBinding.getRoot();
     }
 
-    private void ChangeImageOfFavouriteMeIcon() {
+    private void ChangeImageOfFavouriteMeIcon(boolean b) {
 
         mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase();
         Cursor cursor = MoviesDbHelper.getAllMovies(mDB);
@@ -95,6 +94,16 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
 
 
+    }
+
+    private void ChangeImageOfFavouriteMeIcon() {
+
+        mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase();
+        boolean exist = MoviesDbHelper.isMovieExist(mDB ,mMovie.getOriginalTitle());
+        if (exist == true) {
+            mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
+            isFavorite = true;
+        }
     }
 
     private void setOnClickListenerFavouriteMeImage() {
@@ -233,6 +242,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             setBasicDataOfMovie();
             setTrailersMovie();
             setReviewsMovie();
+            ChangeImageOfFavouriteMeIcon();
             mProgressBar.setVisibility(View.INVISIBLE);
             mBinding.clMovieDetails.setVisibility(View.VISIBLE);
 

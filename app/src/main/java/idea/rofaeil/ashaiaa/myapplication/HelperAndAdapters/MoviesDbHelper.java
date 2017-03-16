@@ -7,13 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.*;
+import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.MovieEntry;
 
 public class MoviesDbHelper extends SQLiteOpenHelper {
 
-    private static MoviesDbHelper sInstance;
     private static final String DATABASE_NAME = "movies.db" ;
     private static final int DATABASE_VERSION  = 1 ;
+    private static MoviesDbHelper sInstance;
 
     private MoviesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,28 +28,6 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
             sInstance = new MoviesDbHelper(context.getApplicationContext());
         }
         return sInstance;
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE "+
-                MovieEntry.TABLE_NAME+" (" +
-                MovieEntry.COLUMN_NAME_MovieId + " INTEGER PRIMARY KEY," +
-                MovieEntry.COLUMN_NAME_OriginalTitle+ " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_MovieOverview+ " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_MovieRuntime+ " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_ReleaseDate+ " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_VoteAverage+ " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_MoviePoster+ " TEXT NOT NULL" +
-                ");";
-
-        db.execSQL(SQL_CREATE_MOVIES_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME );
-        onCreate(db);
     }
 
     public static void addMovieToFavourites(Movie movie, SQLiteDatabase mDB, Context mContext){
@@ -78,22 +56,38 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         );
     }
 
-    public static Cursor isMovieExist (SQLiteDatabase mDB , int id){
+    public static boolean isMovieExist (SQLiteDatabase mDB , String movieTitle){
 
-        return mDB.query(
-                MoviesReaderContract.MovieEntry.TABLE_NAME,// The table to query
-                null,                               // The columns to return
-                MovieEntry.COLUMN_NAME_MovieId+"= ?",   // The columns for the WHERE clause
-                new String[]  { Integer.toString(id) }, // The values for the WHERE clause
-                null,                                   // don't group the rows
-                null,                                   // don't filter by row groups
-                null                                 // The sort order
-        );
+       Cursor cursor = mDB.rawQuery("SELECT "+MovieEntry.COLUMN_NAME_OriginalTitle +" FROM "+MoviesReaderContract.MovieEntry.TABLE_NAME +
+                        " WHERE "+ MovieEntry.COLUMN_NAME_OriginalTitle+" =?" ,new String[] {movieTitle}) ;
+        if (cursor.getCount() >= 1 ) {
+            cursor.close();
+            return true;
+        }else{
+            cursor.close();
+            return false;
+        }
+    }
 
-//
-//        return mDB.rawQuery("SELECT * FROM "+MoviesReaderContract.MovieEntry.TABLE_NAME +
-//                        "WHERE "+ MovieEntry.COLUMN_NAME_MovieId+"= ?"
-//                ,new String[]  {Integer.toString(id) }) ;
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE "+
+                MovieEntry.TABLE_NAME+" (" +
+                MovieEntry.COLUMN_NAME_MovieId + " INTEGER PRIMARY KEY," +
+                MovieEntry.COLUMN_NAME_OriginalTitle+ " TEXT NOT NULL," +
+                MovieEntry.COLUMN_NAME_MovieOverview+ " TEXT NOT NULL," +
+                MovieEntry.COLUMN_NAME_MovieRuntime+ " TEXT NOT NULL," +
+                MovieEntry.COLUMN_NAME_ReleaseDate+ " TEXT NOT NULL," +
+                MovieEntry.COLUMN_NAME_VoteAverage+ " TEXT NOT NULL," +
+                MovieEntry.COLUMN_NAME_MoviePoster+ " TEXT NOT NULL" +
+                ");";
 
+        db.execSQL(SQL_CREATE_MOVIES_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME );
+        onCreate(db);
     }
 }
