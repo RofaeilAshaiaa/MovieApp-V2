@@ -1,5 +1,6 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +33,7 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
     private final int TOP_RATED_LOADER_ID = 22;
     private TopRatedFragmentBinding mBinding;
     private ProgressBar mProgressBar ;
+    private Context mContext ;
     private ArrayList<Movie> mMoviesList ;
     private FragmentActivity mMainActivity;
 
@@ -44,8 +47,13 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
 
         mBinding = DataBindingUtil.inflate(inflater, R.layout.top_rated_fragment, container, false);
         mMainActivity = getActivity() ;
+        mContext = getContext() ;
         mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_main_activity);
-        makeNetworkRequest();
+        if(Utils.isNetworkAvailable(mMainActivity)){
+            makeNetworkRequest();
+        }else{
+            Toast.makeText(mContext, "No Internet Connection!", Toast.LENGTH_SHORT).show();
+        }
         return mBinding.getRoot();
 
     }

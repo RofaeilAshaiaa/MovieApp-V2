@@ -1,5 +1,6 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +34,7 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
     ArrayList<Movie> mMoviesList;
     private PopularFragmentBinding mBinding;
     private ProgressBar mProgressBar;
+    private Context mContext ;
     private FragmentActivity mMainActivity;
 
     public PopularFragment() {
@@ -43,8 +46,13 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
         // Inflate the layout for this fragment
         mBinding = DataBindingUtil.inflate(inflater, R.layout.popular_fragment, container, false);
         mMainActivity = getActivity();
+        mContext = getContext() ;
         mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_main_activity);
-        makeNetworkRequest();
+        if(Utils.isNetworkAvailable(mMainActivity)){
+            makeNetworkRequest();
+        }else{
+            Toast.makeText(mContext, "No Internet Connection!", Toast.LENGTH_SHORT).show();
+        }
         return mBinding.getRoot();
     }
 
@@ -65,7 +73,7 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new NetworkAsyncTaskLoader(getContext(), MainActivity.URLs[0]);
+        return new NetworkAsyncTaskLoader(mContext, MainActivity.URLs[0]);
     }
 
     @Override
