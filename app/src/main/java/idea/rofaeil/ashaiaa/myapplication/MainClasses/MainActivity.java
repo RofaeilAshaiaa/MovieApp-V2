@@ -56,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
                     mBinding.toolbar.setTitle(getResources().getString(R.string.popular));
                     mBinding.bottomNavigation.getMenu().getItem(0).setChecked(true);
                     break;
+
+                default:
+                    mFragment = new PopularFragment();
+                    mBinding.toolbar.setTitle(getResources().getString(R.string.popular));
+                    mBinding.bottomNavigation.getMenu().getItem(0).setChecked(true);
+                    break;
+
             }
 
             getSupportFragmentManager()
