@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences mSharedPref = getApplicationContext()
                 .getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE);
         int last_selected = mSharedPref.getInt(getString(R.string.last_selected), 4);
-        if(last_selected != 4 ){
+
             switch (last_selected ) {
                 case 3:
                     mFragment = new FavouriteFragment();
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.main_container, mFragment)
                     .commit();
-        }
     }
 
     private void setImageHeightValue() {
