@@ -24,6 +24,12 @@
         <activity
             android:name=".MainClasses.DetailFavouriteActivity"
             android:parentActivityName=".MainClasses.MainActivity" />
+
+        <provider
+            android:name=".HelperAndAdapters.MoviesContentProvider"
+            android:authorities="idea.rofaeil.ashaiaa.myapplication"
+            android:exported="false"/>
     </application>
+
 
 </manifest>
