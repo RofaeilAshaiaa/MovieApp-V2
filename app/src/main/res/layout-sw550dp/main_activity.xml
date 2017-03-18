@@ -19,9 +19,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                android:orientation="horizontal">
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -29,8 +27,6 @@
                     android:layout_height="?attr/actionBarSize"
                     android:layout_weight="1"
                     android:background="?attr/colorPrimary"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:title="@string/app_name"
                     app:titleTextColor="@android:color/black" />
                 <TextView
@@ -62,6 +58,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
             android:orientation="horizontal">
 
             <FrameLayout
