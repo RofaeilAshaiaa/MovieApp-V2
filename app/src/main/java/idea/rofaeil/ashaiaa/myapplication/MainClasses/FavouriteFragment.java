@@ -9,10 +9,14 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.parceler.Parcels;
@@ -21,20 +25,20 @@ import java.util.ArrayList;
 
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MainRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesDbHelper;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.FavouriteFragmentBinding;
 
 import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.MovieEntry;
 
-public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapter.ListItemClickListener {
+public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapter.ListItemClickListener,LoaderManager.LoaderCallbacks<Cursor> {
 
+    private final int Favourites_LOADER_ID = 44;
     private FavouriteFragmentBinding mBinding;
     private ArrayList<Movie> mMoviesList;
     private MainRecyclerViewAdapter mAdapter ;
     private Context mContext ;
-    private FragmentActivity mMainActivity;
-//    private ProgressBar mProgressBar;
+    private FragmentActivity mParentActivity;
+    private ProgressBar mProgressBar;
     private SQLiteDatabase mDB;
 
     public FavouriteFragment() {
@@ -46,9 +50,9 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
                              Bundle savedInstanceState) {
 
         mBinding = DataBindingUtil.inflate(inflater, R.layout.favourite_fragment, container, false);
-        mMainActivity= getActivity() ;
+        mParentActivity = getActivity() ;
         mContext = getContext() ;
-//        mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_main_activity);
+        mProgressBar = (ProgressBar) mParentActivity.findViewById(R.id.progress_bar_main_activity);
         return mBinding.getRoot();
 
     }
@@ -57,24 +61,23 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
     public void onStart() {
         super.onStart();
 
-        mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase() ;
-        Cursor cursor = MoviesDbHelper.getAllMovies(mDB) ;
-        extractMovies(cursor);
-        cursor.close();
+//        mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase() ;
+//
+//        Cursor cursor = MoviesDbHelper.getAllMovies(mDB) ;
+//        extractMovies(cursor);
+//        cursor.close();
+        mProgressBar.setVisibility(View.VISIBLE);
+        LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+        Loader<String> popularLoader = loaderManager.getLoader(Favourites_LOADER_ID);
 
-        if(mMoviesList != null ){
-            mAdapter = new MainRecyclerViewAdapter( mMoviesList ,mContext,this ) ;
-            mBinding.rvFavourite.setAdapter(mAdapter );
-            GridLayoutManager mLayoutManager = new GridLayoutManager( mContext,2);
-            mBinding.rvFavourite.setLayoutManager(mLayoutManager);
+        if(popularLoader == null)
+        {
+            loaderManager.initLoader(Favourites_LOADER_ID,null,this).forceLoad();
         }else {
-//            View rootView = mMainActivity.getWindow().getDecorView().findViewById(R.id.main_activity_layout);
-//            View rootView = mMainActivity.getWindow().getDecorView().findViewById(android.R.id.content);
-//            Snackbar.make(rootView
-//                    , "R.string.snackbar_text_no_favourites", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show();
-            Toast.makeText(mContext, R.string.snackbar_text_no_favourites, Toast.LENGTH_SHORT).show();
+            loaderManager.restartLoader(Favourites_LOADER_ID,null,this).forceLoad();
         }
+
+
 
     }
 
@@ -111,16 +114,61 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
             Fragment mFragment = new FavouriteMovieDetailFragment();
             mFragment.setArguments(bundle);
 
-            mMainActivity.getSupportFragmentManager()
+            mParentActivity.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_container_details, mFragment)
                     .commit();
 
         } else {
-            Intent intent = new Intent(mMainActivity, DetailFavouriteActivity.class);
+            Intent intent = new Intent(mParentActivity, DetailFavouriteActivity.class);
             intent.putExtra(getString(R.string.movie_string_parcel), Parcels.wrap(mMoviesList.get(clickedItemIndex)));
             startActivity(intent);
         }
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<Cursor>(mContext) {
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    return mContext.getContentResolver().
+                             query(MovieEntry.CONTENT_URI,null,null,null, MovieEntry.COLUMN_NAME_ReleaseDate);
+                } catch (UnsupportedOperationException e) {
+
+                    e.printStackTrace();
+                    return null ;
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        if (cursor ==null)
+            Toast.makeText(mContext, R.string.some_thing_wrong, Toast.LENGTH_SHORT).show();
+        extractMovies(cursor);
+        cursor.close();
+
+        if(mMoviesList != null ){
+            mAdapter = new MainRecyclerViewAdapter( mMoviesList ,mContext,this ) ;
+            mBinding.rvFavourite.setAdapter(mAdapter );
+            GridLayoutManager mLayoutManager = new GridLayoutManager( mContext,2);
+            mBinding.rvFavourite.setLayoutManager(mLayoutManager);
+        }else {
+//            View rootView = mParentActivity.getWindow().getDecorView().findViewById(R.id.main_activity_layout);
+//            View rootView = mParentActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+//            Snackbar.make(rootView
+//                    , "R.string.snackbar_text_no_favourites", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show();
+            Toast.makeText(mContext, R.string.snackbar_text_no_favourites, Toast.LENGTH_SHORT).show();
+        }
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 }

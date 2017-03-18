@@ -1,5 +1,6 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,8 +29,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.AsyncTaskLoaderContentProviderQuery;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesDbHelper;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Review;
@@ -79,36 +80,30 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         return mBinding.getRoot();
     }
 
-    private void ChangeImageOfFavouriteMeIcon(boolean b) {
-
-        mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase();
-        Cursor cursor = MoviesDbHelper.getAllMovies(mDB);
-        int numberOfMovies = cursor.getCount();
-        if (numberOfMovies == 0) return;
-        cursor.moveToFirst();
-
-        for (int i = 0; i < numberOfMovies; i++) {
-
-            int currentID = cursor.getInt(cursor.getColumnIndex(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieId));
-            if (Movie_ID == currentID) {
-                mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
-                isFavorite = true;
-                break;
-            }
-            cursor.moveToNext();
-        }
-
-
-    }
-
     private void ChangeImageOfFavouriteMeIcon() {
 
-        mDB = MoviesDbHelper.getInstance(mContext).getReadableDatabase();
-        boolean exist = MoviesDbHelper.isMovieExist(mDB ,mMovie.getOriginalTitle());
-        if (exist == true) {
-            mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
-            isFavorite = true;
-        }
+
+        AsyncTaskLoaderContentProviderQuery loader = new AsyncTaskLoaderContentProviderQuery(
+                mContext,
+                "query",
+                null,
+                MoviesReaderContract.MovieEntry.COLUMN_NAME_OriginalTitle+" =?",
+                new String[] {mMovie.getOriginalTitle()},
+                null){
+            @Override
+            public void deliverResult(Object object) {
+                 Cursor cursor = (Cursor) object ;
+                super.deliverResult(cursor);
+                if (cursor.getCount() >= 1) {
+                    mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
+                    isFavorite = true;
+                } else {
+                    cursor.close();
+                }
+                cursor.close();
+            }
+        };
+        loader.forceLoad();
     }
 
     private void setOnClickListenerFavouriteMeImage() {
@@ -116,16 +111,39 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onClick(View v) {
                 if (isFavorite != true) {
-                    mDB = MoviesDbHelper.getInstance(mContext).getWritableDatabase();
-                    MoviesDbHelper.addMovieToFavourites(mMovie, mDB, mContext);
-                    isFavorite =true;
-                    mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
-                    Toast.makeText(mContext, "Movie Added to Favourites!", Toast.LENGTH_SHORT).show();
+                    ContentValues cv = new ContentValues();
+                    cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieId, mMovie.getMovieId());
+                    cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieOverview, mMovie.getMovieOverview());
+                    cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_MoviePoster, mMovie.getMoviePoster());
+                    cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieRuntime, mMovie.getRuntime());
+                    cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_OriginalTitle, mMovie.getOriginalTitle());
+                    cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_ReleaseDate, mMovie.getReleaseDate());
+                    cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_VoteAverage, mMovie.getVoteAverage());
+                    try {
+                        Uri uri = mContext.getContentResolver().insert(MoviesReaderContract.MovieEntry.CONTENT_URI, cv);
+                        if(uri != null){
+                            isFavorite =true;
+                            mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_green_24dp);
+                            Toast.makeText(mContext, "Movie Added to Favourites!", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (UnsupportedOperationException e) {
+                        e.printStackTrace();
+                        Toast.makeText(mContext, R.string.some_thing_wrong, Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    MoviesDbHelper.deleteMovieFromFavourite(mDB, mMovie.getOriginalTitle());
-                    mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_orange_24dp);
-                    isFavorite =false ;
-                    Toast.makeText(mContext, "Movie Removed from Favourites!", Toast.LENGTH_SHORT).show();
+
+                    int deletedRows =mContext.getContentResolver().
+                            delete(
+                                    MoviesReaderContract.MovieEntry.CONTENT_URI,
+                                    MoviesReaderContract.MovieEntry.COLUMN_NAME_OriginalTitle + " =?",
+                                    new String[]{ mMovie.getOriginalTitle()});
+                    if(deletedRows >= 1){
+                        mBinding.ivAddToFavourite.setImageResource(R.drawable.ic_favorite_orange_24dp);
+                        isFavorite =false ;
+                        Toast.makeText(mContext, "Movie Removed from Favourites!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(mContext,R.string.some_thing_wrong, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

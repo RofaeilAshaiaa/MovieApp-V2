@@ -30,6 +30,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     }
 
     public static void addMovieToFavourites(Movie movie, SQLiteDatabase mDB, Context mContext) {
+
         ContentValues cv = new ContentValues();
         cv.put(MovieEntry.COLUMN_NAME_MovieId, movie.getMovieId());
         cv.put(MovieEntry.COLUMN_NAME_MovieOverview, movie.getMovieOverview());
@@ -39,6 +40,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         cv.put(MovieEntry.COLUMN_NAME_ReleaseDate, movie.getReleaseDate());
         cv.put(MovieEntry.COLUMN_NAME_VoteAverage, movie.getVoteAverage());
         mDB.insert(MovieEntry.TABLE_NAME, null, cv);
+
     }
 
     public static Cursor getAllMovies(SQLiteDatabase mDB) {
