@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -35,6 +37,11 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
     private PopularFragmentBinding mBinding;
     private ProgressBar mProgressBar;
     private Context mContext ;
+
+    private int mScrolledPosition =-1;
+    private Parcelable mLayoutManagerSavedState ;
+    private GridLayoutManager mLayoutManager ;
+    private Bundle bundle ;
     private FragmentActivity mMainActivity;
 
     public PopularFragment() {
@@ -49,11 +56,57 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
         mContext = getContext() ;
         mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_main_activity);
         if(Utils.isNetworkAvailable(mMainActivity)){
-            makeNetworkRequest();
+
+//            if(savedInstanceState != null ) {
+////                mScrolledPosition =savedInstanceState.getInt(
+////                        mMainActivity.getResources().getString(R.string.recycler_parcelable),-1);
+////                mMoviesList = Parcels.unwrap(savedInstanceState.getParcelable(
+////                        mMainActivity.getResources().getString(R.string.list_movies_parceler)));
+////                setAdapterRecyclerView();
+//                mLayoutManagerSavedState = savedInstanceState.getParcelable(
+//                        mMainActivity.getResources().getString
+//                                (R.string.recycler_parcelable));
+//
+//            }
+//            else{
+                makeNetworkRequest();
+//            }
         }else{
             Toast.makeText(mContext, "No Internet Connection!", Toast.LENGTH_SHORT).show();
         }
         return mBinding.getRoot();
+    }
+
+    private void scrollToTargetPosition() {
+//        if(mScrolledPosition != -1)
+////            mBinding.rvPopular.getLayoutManager().scrollToPosition(mScrolledPosition);
+//        mLayoutManager.scrollToPositionWithOffset(mScrolledPosition,0);
+        if (mLayoutManagerSavedState != null) {
+            mLayoutManager.
+                    onRestoreInstanceState(mLayoutManagerSavedState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        mScrolledPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+//        outState.putInt(mMainActivity.getResources().getString(R.string.recycler_parcelable),mScrolledPosition);
+//        outState.putParcelable(mMainActivity.getResources().getString(R.string.list_movies_parceler),Parcels.wrap(mMoviesList));
+        outState.putParcelable(mMainActivity.getResources()
+                        .getString(R.string.recycler_parcelable)
+                , mLayoutManager.onSaveInstanceState());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null ) {
+            mLayoutManagerSavedState = savedInstanceState.getParcelable(
+                    mMainActivity.getResources().getString
+                            (R.string.recycler_parcelable));
+
+        }
     }
 
     private void makeNetworkRequest() {
@@ -84,13 +137,18 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
             mJsonObject = new JSONObject(data);
             JSONArray mMoviesJsonArray = mJsonObject.getJSONArray("results");
             mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
-            mBinding.rvPopular.setAdapter(new MainRecyclerViewAdapter(mMoviesList, getContext(), this));
-            GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
-            mBinding.rvPopular.setLayoutManager(mLayoutManager);
+            setAdapterRecyclerView();
+            scrollToTargetPosition();
         } catch (JSONException e) {
         }
 
         mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void setAdapterRecyclerView() {
+        mBinding.rvPopular.setAdapter(new MainRecyclerViewAdapter(mMoviesList, getContext(), this));
+        mLayoutManager = new GridLayoutManager(getContext(), 2);
+        mBinding.rvPopular.setLayoutManager(mLayoutManager);
     }
 
     @Override
