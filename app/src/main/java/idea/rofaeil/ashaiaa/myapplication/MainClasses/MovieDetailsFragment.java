@@ -196,7 +196,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             textView.setText(originalTitle);
         } else {
             Toolbar toolbar = (Toolbar) mParentActivity.findViewById(R.id.tb_movie_details_activity);
-            toolbar.setTitle(originalTitle);
+            if(toolbar!=null)toolbar.setTitle(originalTitle);
         }
 
         String releaseDate = response.getString("release_date");
