@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +53,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private StringBuilder URL;
     private int Movie_ID;
     private boolean isFavorite;
-    private SQLiteDatabase mDB;
     private Movie mMovie;
     private Toast mToast ;
     private ArrayList<String> mTrailersList;
@@ -72,10 +71,14 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mContext = getContext();
 
         mProgressBar = mBinding.pbMovieDetailsFragment;
+        FrameLayout frameLayout = (FrameLayout) mParentActivity.findViewById(R.id.details_fragment_container);
+
         if(Utils.isNetworkAvailable(mParentActivity)){
+            frameLayout.removeAllViewsInLayout();
             makeNetworkRequest();
         }else{
-            Toast.makeText(mContext, "No Internet Connection!", Toast.LENGTH_SHORT).show();
+            if(frameLayout!=null)
+            Utils.inflateOfflineLayout(mContext,frameLayout);
         }
         setOnClickListenerFavouriteMeImage();
         return mBinding.getRoot();

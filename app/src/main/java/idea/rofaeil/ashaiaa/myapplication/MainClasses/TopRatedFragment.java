@@ -14,8 +14,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,10 +56,12 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
         mMainActivity = getActivity() ;
         mContext = getContext() ;
         mProgressBar = (ProgressBar) mMainActivity.findViewById(R.id.progress_bar_main_activity);
+        FrameLayout frameLayout = (FrameLayout) mMainActivity.findViewById(R.id.main_container);
         if(Utils.isNetworkAvailable(mMainActivity)){
+            frameLayout.removeAllViewsInLayout();
             makeNetworkRequest();
         }else{
-            Toast.makeText(mContext, "No Internet Connection!", Toast.LENGTH_SHORT).show();
+            Utils.inflateOfflineLayout(mContext,frameLayout);
         }
         return mBinding.getRoot();
 

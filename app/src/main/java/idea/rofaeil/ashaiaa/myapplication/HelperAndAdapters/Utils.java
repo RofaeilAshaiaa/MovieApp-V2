@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import idea.rofaeil.ashaiaa.myapplication.R;
 
@@ -41,5 +44,12 @@ public class Utils {
                 .append("?api_key=")
                 .append(API_KEY)
                 .append("&append_to_response=videos,reviews");
+    }
+
+    public static void inflateOfflineLayout(Context context,FrameLayout frameLayout){
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.offline_layout,frameLayout,false);
+        frameLayout.removeAllViewsInLayout();
+        frameLayout.addView(view);
     }
 }
