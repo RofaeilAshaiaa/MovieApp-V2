@@ -26,7 +26,7 @@
             android:parentActivityName=".MainClasses.MainActivity" />
 
         <provider
-            android:name=".HelperAndAdapters.MoviesContentProvider"
+            android:name=".ContentProvider.MoviesContentProvider"
             android:authorities="idea.rofaeil.ashaiaa.myapplication"
             android:exported="false"/>
     </application>
