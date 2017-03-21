@@ -2,12 +2,9 @@ package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
 
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.MovieDetailsActivityBinding;
@@ -26,19 +23,25 @@ public class MovieDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent= getIntent() ;
+        // Get the extras (if there are any)
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey(getString(R.string.movie_id_string))) {
+                int id = extras.getInt(getString(R.string.movie_id_string));
 
-        int id = intent.getExtras().getInt(getString(R.string.movie_id_string));
+                Bundle bundle = new Bundle() ;
+                bundle.putInt(getString(R.string.movie_id_string),id);
 
-        Bundle bundle = new Bundle() ;
-        bundle.putInt(getString(R.string.movie_id_string),id);
+                Fragment mFragment = new MovieDetailsFragment();
+                mFragment.setArguments(bundle);
 
-        Fragment mFragment = new MovieDetailsFragment();
-        mFragment.setArguments(bundle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.details_fragment_container, mFragment)
+                        .commit();
+            }
+        }
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.details_fragment_container, mFragment)
-                .commit();
     }
 
 }

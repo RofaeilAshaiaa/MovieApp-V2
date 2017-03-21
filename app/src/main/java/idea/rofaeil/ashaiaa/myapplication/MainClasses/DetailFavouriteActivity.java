@@ -1,5 +1,6 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,18 +24,27 @@ public class DetailFavouriteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        Intent intent= getIntent() ;
 
-        Movie movie = Parcels.unwrap(getIntent().getParcelableExtra(getString(R.string.movie_string_parcel)));
+        // Get the extras (if there are any)
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey(getString(R.string.movie_string_parcel))) {
+                Movie movie = Parcels.unwrap(intent.getParcelableExtra(getString(R.string.movie_string_parcel)));
 
-        Bundle bundle = new Bundle() ;
-        bundle.putParcelable(getString(R.string.movie_string_parcel), Parcels.wrap(movie) );
+                Bundle bundle = new Bundle() ;
+                bundle.putParcelable(getString(R.string.movie_string_parcel), Parcels.wrap(movie) );
 
-        Fragment mFragment = new FavouriteMovieDetailFragment();
-        mFragment.setArguments(bundle);
+                Fragment mFragment = new FavouriteMovieDetailFragment();
+                mFragment.setArguments(bundle);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.details_fragment_container_favourites, mFragment)
-                .commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.details_fragment_container_favourites, mFragment)
+                        .commit();
+            }
+        }
+
+
     }
 }
