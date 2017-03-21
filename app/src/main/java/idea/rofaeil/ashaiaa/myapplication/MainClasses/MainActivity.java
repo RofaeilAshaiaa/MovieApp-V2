@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
                     "http://api.themoviedb.org/3/movie/top_rated?api_key=27c5319da038dffe1e6957609d9797a0"};
     public static int targetY;
     public static boolean isTwoPane ;
+    private int lastSelected;
     private Fragment mFragment;
     private MainActivityBinding mBinding;
 
@@ -31,18 +32,51 @@ public class MainActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         if (savedInstanceState == null) {
             setLastSelectedFragment();
+        }else{
+            setLastSelectedPageOfBottomNavigation();
         }
         setClickListenerNavigationBottom();
         setImageHeightValue();
         isTwoPane = isTwoPane() ;
     }
 
-    private void setLastSelectedFragment() {
+    private void setLastSelectedPageOfBottomNavigation() {
+
+        setLastSelectedValue();
+
+        switch (lastSelected) {
+            case 3:
+                mBinding.toolbar.setTitle(getResources().getString(R.string.favorites));
+                mBinding.bottomNavigation.getMenu().getItem(2).setChecked(true);
+                break;
+            case 2:
+                mBinding.toolbar.setTitle(getResources().getString(R.string.top_rated));
+                mBinding.bottomNavigation.getMenu().getItem(1).setChecked(true);
+                break;
+            case 1:
+                mBinding.toolbar.setTitle(getResources().getString(R.string.popular));
+                mBinding.bottomNavigation.getMenu().getItem(0).setChecked(true);
+                break;
+
+            default:
+                mBinding.toolbar.setTitle(getResources().getString(R.string.popular));
+                mBinding.bottomNavigation.getMenu().getItem(0).setChecked(true);
+                break;
+
+        }
+
+    }
+
+    private void setLastSelectedValue() {
         SharedPreferences mSharedPref = getApplicationContext()
                 .getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE);
-        int last_selected = mSharedPref.getInt(getString(R.string.last_selected), 4);
+        lastSelected = mSharedPref.getInt(getString(R.string.last_selected), 4);
+    }
 
-            switch (last_selected ) {
+    private void setLastSelectedFragment() {
+        setLastSelectedValue();
+
+            switch (lastSelected) {
                 case 3:
                     mFragment = new FavouriteFragment();
                     mBinding.toolbar.setTitle(getResources().getString(R.string.favorites));
