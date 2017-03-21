@@ -10,5 +10,6 @@
     <string name="snackbar_text_no_favourites">No Favourites yet!</string>
     <string name="movie_string_parcel">movie</string>
     <string name="some_thing_wrong">Some Thing Went Wrong</string>
+    <string name="recycler_parcelable">state</string>
 
 </resources>
