@@ -77,7 +77,8 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
 //        mScrolledPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
 //        outState.putInt(mMainActivity.getResources().getString(R.string.recycler_parcelable),mScrolledPosition);
 //        outState.putParcelable(mMainActivity.getResources().getString(R.string.list_movies_parceler),Parcels.wrap(mMoviesList));
-        outState.putParcelable(mMainActivity.getResources()
+        if(mLayoutManager!=null)
+            outState.putParcelable(mMainActivity.getResources()
                         .getString(R.string.recycler_parcelable)
                 , mLayoutManager.onSaveInstanceState());
     }
