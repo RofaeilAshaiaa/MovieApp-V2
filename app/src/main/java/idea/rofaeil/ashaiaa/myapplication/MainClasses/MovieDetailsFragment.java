@@ -74,11 +74,17 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         FrameLayout frameLayout = (FrameLayout) mParentActivity.findViewById(R.id.details_fragment_container);
 
         if(Utils.isNetworkAvailable(mParentActivity)){
-            frameLayout.removeAllViewsInLayout();
+            if(frameLayout!=null)frameLayout.removeAllViewsInLayout();
+
             makeNetworkRequest();
         }else{
             if(frameLayout!=null)
             Utils.inflateOfflineLayout(mContext,frameLayout);
+            else{
+                frameLayout = (FrameLayout) mParentActivity.findViewById(R.id.main_container_details);
+                if(frameLayout!=null)
+                Utils.inflateOfflineLayout(mContext,frameLayout);
+            }
         }
         setOnClickListenerFavouriteMeImage();
         return mBinding.getRoot();
