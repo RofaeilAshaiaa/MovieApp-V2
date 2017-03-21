@@ -151,9 +151,8 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     }
 
     private void makeNetworkRequest() {
-        URL = new StringBuilder("https://api.themoviedb.org/3/movie/")
-                .append(Movie_ID)
-                .append("?api_key=27c5319da038dffe1e6957609d9797a0&append_to_response=videos,reviews");
+
+        URL = Utils.getStringBuilderOfDetailsURL(mContext, Movie_ID);
 
         mProgressBar.setVisibility(View.VISIBLE);
         mBinding.clMovieDetails.setVisibility(View.INVISIBLE);
