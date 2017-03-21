@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import idea.rofaeil.ashaiaa.myapplication.MainClasses.MainActivity;
+import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewItemBinding;
 

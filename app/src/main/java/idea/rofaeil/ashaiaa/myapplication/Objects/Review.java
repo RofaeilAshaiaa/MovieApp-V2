@@ -1,4 +1,4 @@
-package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
+package idea.rofaeil.ashaiaa.myapplication.Objects;
 
 /**
  * Created by Matrix on 3/12/2017.

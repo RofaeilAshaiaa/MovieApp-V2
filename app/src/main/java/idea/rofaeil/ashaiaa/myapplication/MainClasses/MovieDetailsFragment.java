@@ -30,12 +30,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.AsyncTaskLoaderContentProviderQuery;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Review;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.ReviewsRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.TraitorsRecyclerViewAdapter;
+import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
+import idea.rofaeil.ashaiaa.myapplication.Objects.Review;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.MovieDetailsFragmentBinding;
 import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewReviewItemBinding;

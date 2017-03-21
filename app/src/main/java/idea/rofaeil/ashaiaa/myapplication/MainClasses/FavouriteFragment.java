@@ -24,7 +24,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MainRecyclerViewAdapter;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
+import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.FavouriteFragmentBinding;
 

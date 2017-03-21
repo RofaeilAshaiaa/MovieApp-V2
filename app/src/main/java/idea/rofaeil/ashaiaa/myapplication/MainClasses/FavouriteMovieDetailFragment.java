@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
+import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.FavouriteMovieDetailFragmentBinding;
 

@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
+
 import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.MovieEntry;
 
 public class MoviesDbHelper extends SQLiteOpenHelper {

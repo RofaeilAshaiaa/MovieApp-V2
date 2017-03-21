@@ -1,14 +1,13 @@
 package idea.rofaeil.ashaiaa.myapplication.MainClasses;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import org.parceler.Parcels;
 
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Movie;
+import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.DetailFavouriteActivityBinding;
 
