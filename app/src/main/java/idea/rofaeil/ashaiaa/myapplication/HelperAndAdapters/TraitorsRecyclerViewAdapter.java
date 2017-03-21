@@ -7,19 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
+import idea.rofaeil.ashaiaa.myapplication.Objects.Trailer;
 import idea.rofaeil.ashaiaa.myapplication.R;
-import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewItemBinding;
 import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewTrailorItemBinding;
 
 public class TraitorsRecyclerViewAdapter extends RecyclerView.Adapter<TraitorsRecyclerViewAdapter.myViewHolder>{
 
     final private ListItemClickListener itemClickListener ;
-    private ArrayList<String> mTrailersList;
+    private ArrayList<Trailer> mTrailersList;
     private Context mContext;
 
-    public TraitorsRecyclerViewAdapter(ArrayList<String> mMovieArrayList, Context mContext
+    public TraitorsRecyclerViewAdapter(ArrayList<Trailer> mMovieArrayList, Context mContext
                                                      , ListItemClickListener itemClickListener ) {
         this.mTrailersList = mMovieArrayList;
         this.mContext = mContext;
@@ -41,6 +43,11 @@ public class TraitorsRecyclerViewAdapter extends RecyclerView.Adapter<TraitorsRe
 
 //        holder.itemBinding.rvImageViewItem.setMinimumHeight(MainActivity.targetY);\
         holder.itemBinding.rvTextViewItem.setText("Trailer "+ (position+1) );
+
+        Picasso.with(mContext).load(mTrailersList.get(position).getVideoThumbURL())
+                .placeholder(R.drawable.ic_autorenew_black_24dp)
+                .error(R.drawable.ic_error_outline_black_24dp)
+                .fit().into(holder.itemBinding.rvImage);
 
     }
 

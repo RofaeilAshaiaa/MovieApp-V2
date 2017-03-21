@@ -37,6 +37,7 @@ import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.TraitorsRecyclerView
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Utils;
 import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.Objects.Review;
+import idea.rofaeil.ashaiaa.myapplication.Objects.Trailer;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.MovieDetailsFragmentBinding;
 import idea.rofaeil.ashaiaa.myapplication.databinding.RecyclerviewReviewItemBinding;
@@ -55,7 +56,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private boolean isFavorite;
     private Movie mMovie;
     private Toast mToast ;
-    private ArrayList<String> mTrailersList;
+    private ArrayList<Trailer> mTrailersList;
     private ArrayList<Review> mReviewList;
 
     public MovieDetailsFragment() {
@@ -226,12 +227,17 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         for (int i = 0; i < numberOfTrailers; i++) {
 
+            Trailer trailer = new Trailer() ;
+
             JSONObject video_content_json_in_loop = (JSONObject) videos_array.get(i);
             String mVideoKey = video_content_json_in_loop.getString("key");
-
+            StringBuilder imageThumbURL = new StringBuilder("http://img.youtube.com/vi/")
+                    .append(mVideoKey).append("/0.jpg");
+            trailer.setVideoThumbURL(imageThumbURL.toString());
             StringBuilder mUrl = new StringBuilder("https://www.youtube.com/watch?v=");
             mUrl.append(mVideoKey);
-            mTrailersList.add(mUrl.toString());
+            trailer.setVideoURL(mUrl.toString());
+            mTrailersList.add(trailer);
 
         }
 
@@ -318,6 +324,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onListItemTrailerClicked(int clickedItemIndex) {
-        openWebPage(mTrailersList.get(clickedItemIndex));
+        openWebPage(mTrailersList.get(clickedItemIndex).getVideoURL());
     }
 }
