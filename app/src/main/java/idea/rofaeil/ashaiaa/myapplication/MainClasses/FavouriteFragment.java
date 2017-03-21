@@ -18,6 +18,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MainRecyclerViewAdapter;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Utils;
 import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.FavouriteFragmentBinding;
@@ -175,7 +177,7 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
             Toast.makeText(mContext, R.string.some_thing_wrong, Toast.LENGTH_SHORT).show();
         extractMovies(cursor);
         cursor.close();
-
+        FrameLayout frameLayout = (FrameLayout) mParentActivity.findViewById(R.id.main_container);
         if(mMoviesList != null ){
             mAdapter = new MainRecyclerViewAdapter( mMoviesList ,mContext,this ) ;
             mBinding.rvFavourite.setAdapter(mAdapter );
@@ -188,7 +190,7 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
 //            Snackbar.make(rootView
 //                    , "R.string.snackbar_text_no_favourites", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show();
-            Toast.makeText(mContext, R.string.snackbar_text_no_favourites, Toast.LENGTH_SHORT).show();
+            Utils.inflateNoFavouritesLayout(mContext,frameLayout);
         }
         mProgressBar.setVisibility(View.INVISIBLE);
     }
