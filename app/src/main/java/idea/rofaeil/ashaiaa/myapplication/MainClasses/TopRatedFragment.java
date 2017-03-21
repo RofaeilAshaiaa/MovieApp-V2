@@ -30,6 +30,8 @@ import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.TopRatedFragmentBinding;
 
+import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Utils.URLs;
+
 public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
         ,MainRecyclerViewAdapter.ListItemClickListener {
 
@@ -65,7 +67,7 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new NetworkAsyncTaskLoader(getContext() ,MainActivity.URLs[1]);
+        return new NetworkAsyncTaskLoader(getContext() ,URLs[1]);
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {

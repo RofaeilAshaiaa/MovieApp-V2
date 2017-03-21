@@ -30,6 +30,8 @@ import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.PopularFragmentBinding;
 
+import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Utils.URLs;
+
 public class PopularFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
         , MainRecyclerViewAdapter.ListItemClickListener {
 
@@ -124,7 +126,7 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new NetworkAsyncTaskLoader(mContext, MainActivity.URLs[0]);
+        return new NetworkAsyncTaskLoader(mContext, URLs[0]);
     }
 
     @Override

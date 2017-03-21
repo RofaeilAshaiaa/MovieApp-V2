@@ -11,12 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Utils;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.MainActivityBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String[] URLs ;
     public static int targetY;
     public static boolean isTwoPane ;
     private int lastSelected;
@@ -35,17 +35,8 @@ public class MainActivity extends AppCompatActivity {
         }
         setClickListenerNavigationBottom();
         setImageHeightValue();
-        ConstructURLs();
+        Utils.ConstructURLs(this);
         isTwoPane = isTwoPane() ;
-    }
-
-    private void ConstructURLs() {
-//    getResources().getString(R.id.THE_MOVIE_DB_API_TOKEN) ;
-       String API_KEY = getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
-        URLs = new String[2] ;
-        URLs[0] = new String("http://api.themoviedb.org/3/movie/popular?api_key="+ API_KEY) ;
-        URLs[1] = new String("http://api.themoviedb.org/3/movie/top_rated?api_key="+ API_KEY) ;
-
     }
 
     private void setLastSelectedPageOfBottomNavigation() {
