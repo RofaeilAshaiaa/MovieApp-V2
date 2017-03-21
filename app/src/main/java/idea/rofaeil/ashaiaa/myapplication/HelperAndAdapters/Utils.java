@@ -52,4 +52,10 @@ public class Utils {
         frameLayout.removeAllViewsInLayout();
         frameLayout.addView(view);
     }
+    public static void inflateNoFavouritesLayout(Context context,FrameLayout frameLayout){
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.no_favourites,frameLayout,false);
+        frameLayout.removeAllViewsInLayout();
+        frameLayout.addView(view);
+    }
 }
