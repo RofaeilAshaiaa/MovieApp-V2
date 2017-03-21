@@ -1,4 +1,4 @@
-package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
+package idea.rofaeil.ashaiaa.myapplication.ContentProvider;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

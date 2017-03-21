@@ -1,4 +1,4 @@
-package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
+package idea.rofaeil.ashaiaa.myapplication.ContentProvider;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
-
-import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.MovieEntry;
 
 public class MoviesDbHelper extends SQLiteOpenHelper {
 
@@ -34,14 +32,14 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     public static void addMovieToFavourites(Movie movie, SQLiteDatabase mDB, Context mContext) {
 
         ContentValues cv = new ContentValues();
-        cv.put(MovieEntry.COLUMN_NAME_MovieId, movie.getMovieId());
-        cv.put(MovieEntry.COLUMN_NAME_MovieOverview, movie.getMovieOverview());
-        cv.put(MovieEntry.COLUMN_NAME_MoviePoster, movie.getMoviePoster());
-        cv.put(MovieEntry.COLUMN_NAME_MovieRuntime, movie.getRuntime());
-        cv.put(MovieEntry.COLUMN_NAME_OriginalTitle, movie.getOriginalTitle());
-        cv.put(MovieEntry.COLUMN_NAME_ReleaseDate, movie.getReleaseDate());
-        cv.put(MovieEntry.COLUMN_NAME_VoteAverage, movie.getVoteAverage());
-        mDB.insert(MovieEntry.TABLE_NAME, null, cv);
+        cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieId, movie.getMovieId());
+        cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieOverview, movie.getMovieOverview());
+        cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_MoviePoster, movie.getMoviePoster());
+        cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieRuntime, movie.getRuntime());
+        cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_OriginalTitle, movie.getOriginalTitle());
+        cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_ReleaseDate, movie.getReleaseDate());
+        cv.put(MoviesReaderContract.MovieEntry.COLUMN_NAME_VoteAverage, movie.getVoteAverage());
+        mDB.insert(MoviesReaderContract.MovieEntry.TABLE_NAME, null, cv);
 
     }
 
@@ -60,8 +58,8 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     public static boolean isMovieExist(SQLiteDatabase mDB, String movieTitle) {
 
-        Cursor cursor = mDB.rawQuery("SELECT " + MovieEntry.COLUMN_NAME_OriginalTitle + " FROM " + MoviesReaderContract.MovieEntry.TABLE_NAME +
-                " WHERE " + MovieEntry.COLUMN_NAME_OriginalTitle + " =?", new String[]{movieTitle});
+        Cursor cursor = mDB.rawQuery("SELECT " + MoviesReaderContract.MovieEntry.COLUMN_NAME_OriginalTitle + " FROM " + MoviesReaderContract.MovieEntry.TABLE_NAME +
+                " WHERE " + MoviesReaderContract.MovieEntry.COLUMN_NAME_OriginalTitle + " =?", new String[]{movieTitle});
         if (cursor.getCount() >= 1) {
             cursor.close();
             return true;
@@ -73,8 +71,8 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     public static boolean deleteMovieFromFavourite(SQLiteDatabase mDB, String movieTitle) {
 
-        int id = mDB.delete(MovieEntry.TABLE_NAME
-                , MovieEntry.COLUMN_NAME_OriginalTitle + " =?"
+        int id = mDB.delete(MoviesReaderContract.MovieEntry.TABLE_NAME
+                , MoviesReaderContract.MovieEntry.COLUMN_NAME_OriginalTitle + " =?"
                 , new String[]{movieTitle});
 
         return id >0 ;
@@ -83,14 +81,14 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE " +
-                MovieEntry.TABLE_NAME + " (" +
-                MovieEntry.COLUMN_NAME_MovieId + " INTEGER PRIMARY KEY," +
-                MovieEntry.COLUMN_NAME_OriginalTitle + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_MovieOverview + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_MovieRuntime + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_ReleaseDate + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_VoteAverage + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_NAME_MoviePoster + " TEXT NOT NULL" +
+                MoviesReaderContract.MovieEntry.TABLE_NAME + " (" +
+                MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieId + " INTEGER PRIMARY KEY," +
+                MoviesReaderContract.MovieEntry.COLUMN_NAME_OriginalTitle + " TEXT NOT NULL," +
+                MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieOverview + " TEXT NOT NULL," +
+                MoviesReaderContract.MovieEntry.COLUMN_NAME_MovieRuntime + " TEXT NOT NULL," +
+                MoviesReaderContract.MovieEntry.COLUMN_NAME_ReleaseDate + " TEXT NOT NULL," +
+                MoviesReaderContract.MovieEntry.COLUMN_NAME_VoteAverage + " TEXT NOT NULL," +
+                MoviesReaderContract.MovieEntry.COLUMN_NAME_MoviePoster + " TEXT NOT NULL" +
                 ");";
 
         db.execSQL(SQL_CREATE_MOVIES_TABLE);
@@ -98,7 +96,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MoviesReaderContract.MovieEntry.TABLE_NAME);
         onCreate(db);
     }
 }

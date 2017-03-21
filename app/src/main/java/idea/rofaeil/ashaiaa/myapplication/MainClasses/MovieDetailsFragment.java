@@ -29,11 +29,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import idea.rofaeil.ashaiaa.myapplication.ContentProvider.MoviesReaderContract;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.AsyncTaskLoaderContentProviderQuery;
-import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.NetworkAsyncTaskLoader;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.ReviewsRecyclerViewAdapter;
 import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.TraitorsRecyclerViewAdapter;
+import idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.Utils;
 import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.Objects.Review;
 import idea.rofaeil.ashaiaa.myapplication.R;

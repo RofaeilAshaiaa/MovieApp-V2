@@ -1,4 +1,4 @@
-package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
+package idea.rofaeil.ashaiaa.myapplication.ContentProvider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

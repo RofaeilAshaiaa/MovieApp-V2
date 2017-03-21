@@ -3,6 +3,8 @@ package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import idea.rofaeil.ashaiaa.myapplication.ContentProvider.MoviesReaderContract;
+
 /**
  * Created by Matrix on 3/18/2017.
  */

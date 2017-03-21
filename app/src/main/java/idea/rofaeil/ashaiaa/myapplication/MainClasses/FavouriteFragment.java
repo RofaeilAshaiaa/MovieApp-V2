@@ -28,7 +28,7 @@ import idea.rofaeil.ashaiaa.myapplication.Objects.Movie;
 import idea.rofaeil.ashaiaa.myapplication.R;
 import idea.rofaeil.ashaiaa.myapplication.databinding.FavouriteFragmentBinding;
 
-import static idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters.MoviesReaderContract.MovieEntry;
+import static idea.rofaeil.ashaiaa.myapplication.ContentProvider.MoviesReaderContract.MovieEntry;
 
 public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapter.ListItemClickListener,LoaderManager.LoaderCallbacks<Cursor> {
 
