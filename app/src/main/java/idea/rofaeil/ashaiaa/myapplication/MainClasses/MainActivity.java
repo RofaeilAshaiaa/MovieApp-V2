@@ -16,9 +16,7 @@ import idea.rofaeil.ashaiaa.myapplication.databinding.MainActivityBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String[] URLs =
-            {"http://api.themoviedb.org/3/movie/popular?api_key=27c5319da038dffe1e6957609d9797a0",
-                    "http://api.themoviedb.org/3/movie/top_rated?api_key=27c5319da038dffe1e6957609d9797a0"};
+    public static String[] URLs ;
     public static int targetY;
     public static boolean isTwoPane ;
     private int lastSelected;
@@ -37,7 +35,17 @@ public class MainActivity extends AppCompatActivity {
         }
         setClickListenerNavigationBottom();
         setImageHeightValue();
+        ConstructURLs();
         isTwoPane = isTwoPane() ;
+    }
+
+    private void ConstructURLs() {
+//    getResources().getString(R.id.THE_MOVIE_DB_API_TOKEN) ;
+       String API_KEY = getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
+        URLs = new String[2] ;
+        URLs[0] = new String("http://api.themoviedb.org/3/movie/popular?api_key="+ API_KEY) ;
+        URLs[1] = new String("http://api.themoviedb.org/3/movie/top_rated?api_key="+ API_KEY) ;
+
     }
 
     private void setLastSelectedPageOfBottomNavigation() {
