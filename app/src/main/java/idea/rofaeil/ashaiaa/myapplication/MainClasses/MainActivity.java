@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
-        setLastSelectedFragment();
+        if (savedInstanceState == null) {
+            setLastSelectedFragment();
+        }
         setClickListenerNavigationBottom();
         setImageHeightValue();
         isTwoPane = isTwoPane() ;
