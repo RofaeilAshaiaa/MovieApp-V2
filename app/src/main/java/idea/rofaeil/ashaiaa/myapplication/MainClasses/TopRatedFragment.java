@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -35,6 +37,8 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
     private TopRatedFragmentBinding mBinding;
     private ProgressBar mProgressBar ;
     private Context mContext ;
+    private Parcelable mLayoutManagerSavedState ;
+    private GridLayoutManager mLayoutManager ;
     private ArrayList<Movie> mMoviesList ;
     private FragmentActivity mMainActivity;
 
@@ -63,6 +67,27 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
     public Loader<String> onCreateLoader(int id, Bundle args) {
         return new NetworkAsyncTaskLoader(getContext() ,MainActivity.URLs[1]);
     }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        mScrolledPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+//        outState.putInt(mMainActivity.getResources().getString(R.string.recycler_parcelable),mScrolledPosition);
+//        outState.putParcelable(mMainActivity.getResources().getString(R.string.list_movies_parceler),Parcels.wrap(mMoviesList));
+        outState.putParcelable(mMainActivity.getResources()
+                        .getString(R.string.recycler_parcelable)
+                , mLayoutManager.onSaveInstanceState());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null ) {
+            mLayoutManagerSavedState = savedInstanceState.getParcelable(
+                    mMainActivity.getResources().getString
+                            (R.string.recycler_parcelable));
+
+        }
+    }
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
@@ -70,10 +95,11 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
         try {
             mJsonObject = new JSONObject(data);
             JSONArray mMoviesJsonArray = mJsonObject.getJSONArray("results");
-             mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
+            mMoviesList = Movie.extractMovieDataFromJson(mMoviesJsonArray);
             mBinding.rvTopRated.setAdapter( new MainRecyclerViewAdapter(mMoviesList,getContext() ,this));
-            GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
+            mLayoutManager = new GridLayoutManager(getContext(),2);
             mBinding.rvTopRated.setLayoutManager(mLayoutManager);
+            scrollToTargetPosition();
         } catch (JSONException e) {
         }
 
@@ -122,4 +148,15 @@ public class TopRatedFragment extends Fragment implements LoaderManager.LoaderCa
             startActivity(intent);
         }
     }
+
+    private void scrollToTargetPosition() {
+//        if(mScrolledPosition != -1)
+////            mBinding.rvPopular.getLayoutManager().scrollToPosition(mScrolledPosition);
+//        mLayoutManager.scrollToPositionWithOffset(mScrolledPosition,0);
+        if (mLayoutManagerSavedState != null) {
+            mLayoutManager.
+                    onRestoreInstanceState(mLayoutManagerSavedState);
+        }
+    }
+
 }

@@ -38,11 +38,8 @@ public class PopularFragment extends Fragment implements LoaderManager.LoaderCal
     private PopularFragmentBinding mBinding;
     private ProgressBar mProgressBar;
     private Context mContext ;
-
-    private int mScrolledPosition =-1;
     private Parcelable mLayoutManagerSavedState ;
     private GridLayoutManager mLayoutManager ;
-    private Bundle bundle ;
     private FragmentActivity mMainActivity;
 
     public PopularFragment() {

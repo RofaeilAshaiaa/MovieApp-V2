@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -37,6 +39,8 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
     private ArrayList<Movie> mMoviesList;
     private MainRecyclerViewAdapter mAdapter ;
     private Context mContext ;
+    private Parcelable mLayoutManagerSavedState ;
+    private GridLayoutManager mLayoutManager ;
     private FragmentActivity mParentActivity;
     private ProgressBar mProgressBar;
     private SQLiteDatabase mDB;
@@ -79,6 +83,27 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
 
 
 
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        mScrolledPosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+//        outState.putInt(mMainActivity.getResources().getString(R.string.recycler_parcelable),mScrolledPosition);
+//        outState.putParcelable(mMainActivity.getResources().getString(R.string.list_movies_parceler),Parcels.wrap(mMoviesList));
+        outState.putParcelable(mParentActivity.getResources()
+                        .getString(R.string.recycler_parcelable)
+                , mLayoutManager.onSaveInstanceState());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null ) {
+            mLayoutManagerSavedState = savedInstanceState.getParcelable(
+                    mParentActivity.getResources().getString
+                            (R.string.recycler_parcelable));
+
+        }
     }
 
     private void extractMovies(Cursor cursor) {
@@ -154,8 +179,9 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
         if(mMoviesList != null ){
             mAdapter = new MainRecyclerViewAdapter( mMoviesList ,mContext,this ) ;
             mBinding.rvFavourite.setAdapter(mAdapter );
-            GridLayoutManager mLayoutManager = new GridLayoutManager( mContext,2);
+            mLayoutManager = new GridLayoutManager( mContext,2);
             mBinding.rvFavourite.setLayoutManager(mLayoutManager);
+            scrollToTargetPosition();
         }else {
 //            View rootView = mParentActivity.getWindow().getDecorView().findViewById(R.id.main_activity_layout);
 //            View rootView = mParentActivity.getWindow().getDecorView().findViewById(android.R.id.content);
@@ -170,5 +196,15 @@ public class FavouriteFragment extends Fragment implements MainRecyclerViewAdapt
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    private void scrollToTargetPosition() {
+//        if(mScrolledPosition != -1)
+////            mBinding.rvPopular.getLayoutManager().scrollToPosition(mScrolledPosition);
+//        mLayoutManager.scrollToPositionWithOffset(mScrolledPosition,0);
+        if (mLayoutManagerSavedState != null) {
+            mLayoutManager.
+                    onRestoreInstanceState(mLayoutManagerSavedState);
+        }
     }
 }
