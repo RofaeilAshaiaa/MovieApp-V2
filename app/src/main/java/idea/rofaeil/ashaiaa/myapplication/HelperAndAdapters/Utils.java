@@ -1,4 +1,4 @@
-package idea.rofaeil.ashaiaa.myapplication.MainClasses;
+package idea.rofaeil.ashaiaa.myapplication.HelperAndAdapters;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
