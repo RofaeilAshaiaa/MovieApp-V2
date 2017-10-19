@@ -1,6 +1,8 @@
 ## MovieApp-V2
 Final Project of the New Version of Developing Android Apps Course by Udacity (Part of Nanodegree Program)
 
+![alt text](https://github.com/RofaeilAshaiaa/MovieApp-V2/blob/master/Screenshot%20from%202017-10-18%2017-19-54.png)
+
 ## Tasks Included:
 * fetch data from the Internet with theMovieDB API.
 * use adapters and custom list layouts to populate list views.
